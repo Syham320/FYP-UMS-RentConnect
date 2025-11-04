@@ -1,0 +1,178 @@
+/* =========================================
+   UMS RentConnect Global Styles
+   ========================================= */
+
+/* Font + Smooth UI */
+body {
+    font-family: 'Inter', sans-serif;
+    scroll-behavior: smooth;
+    background-color: #f8fafc;
+}
+
+/* Navbar */
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    transition: all 0.2s ease-in-out;
+}
+
+/* Navbar shadow on scroll */
+.navbar.scrolled {
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+/* Fix navbar logo size */
+.navbar img {
+    max-height: 50px; 
+    width: auto;
+}
+
+
+/* Hero Text Effects */
+.hero-title {
+    text-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+}
+
+/* Buttons */
+.btn-primary {
+    @apply bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold shadow-md hover:bg-blue-700 transition duration-200;
+}
+
+.btn-outline {
+    @apply border border-blue-600 text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-blue-600 hover:text-white transition;
+}
+
+/* Feature Icons */
+.feature-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 9999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 34px;
+    margin: 0 auto 12px;
+    transition: transform 0.2s ease-in-out;
+}
+
+.feature-icon:hover {
+    transform: scale(1.1);
+}
+
+/* Footer */
+footer {
+    background: #0f172a; /* Tailwind slate-900 */
+}
+
+/* Card Hover */
+.feature-card:hover {
+    transform: translateY(-5px);
+    transition: 0.25s ease;
+}
+
+/* Section padding fix */
+.section {
+    padding-top: 80px;
+    padding-bottom: 80px;
+}
+
+/* Icons inside circles */
+.icon-verified {
+    background: #bbf7d0; /* green-100 */
+    color: #22c55e;     /* green-500 */
+}
+
+.icon-chat {
+    background: #dbeafe; /* blue-100 */
+    color: #3b82f6;      /* blue-500 */
+}
+
+.icon-form {
+    background: #ede9fe; /* purple-100 */
+    color: #8b5cf6;      /* purple-500 */
+}
+
+/* Scroll fade animation */
+.fade-in {
+    opacity: 0;
+    transform: translateY(25px);
+    animation: fadeInUp 0.8s ease forwards;
+}
+/* Navbar Wrapper */
+.ums-navbar {
+    background: rgba(250, 249, 249, 0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid #729df1;
+    position: sticky;
+    top: 0;
+    z-index: 999;
+}
+
+/* Container */
+.ums-container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 12px 22px;
+}
+
+/* Flex Layout */
+.ums-nav-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Logo */
+.ums-logo {
+    height: 55px;
+    width: auto;
+    transition: transform .2s ease-in-out;
+}
+
+.ums-logo:hover {
+    transform: scale(1.05);
+}
+
+/* Links */
+.ums-nav-links {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.ums-link {
+    font-size: 15px;
+    font-weight: 500;
+    color: #4b5563;
+    text-decoration: none;
+    transition: .3s;
+}
+
+.ums-link:hover {
+    color: #2563eb;
+}
+
+/* Register Button */
+.ums-btn-primary {
+    background: #2563eb;
+    padding: 9px 22px;
+    border-radius: 6px;
+    font-weight: 600;
+    color: #fff;
+    text-decoration: none;
+    transition: background .25s ease, transform .2s ease;
+}
+
+.ums-btn-primary:hover {
+    background: #1d4ed8;
+    transform: translateY(-2px);
+}
+
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
