@@ -19,6 +19,20 @@ window.addEventListener("scroll", () => {
     const navbar = document.querySelector(".navbar");
     navbar.classList.toggle("scrolled", window.scrollY > 10);
 });
+
+function toggleDropdown() {
+    const menu = document.getElementById('dropdownMenu');
+    menu.classList.toggle('hidden');
+}
+
+// Close dropdown when clicking outside
+document.addEventListener('click', function(event) {
+    const dropdown = document.getElementById('userDropdown');
+    const menu = document.getElementById('dropdownMenu');
+    if (!dropdown.contains(event.target)) {
+        menu.classList.add('hidden');
+    }
+});
 </script>
 
 
@@ -30,18 +44,35 @@ window.addEventListener("scroll", () => {
 
             <!-- Logo -->
             <a href="/" class="ums-brand">
-                <img src="{{ asset('images/profiles/UMSRentConnect_logo.svg') }}" 
+                <img src="{{ asset('images/profiles/UMSRentConnect_logo.svg') }}"
                     alt="UMS RentConnect Logo" class="ums-logo">
             </a>
 
-            <!-- Links -->
-            <div class="ums-nav-links">
-                <a href="{{ route('login') }}" class="ums-link">Login</a>
-                <a href="{{ route('register') }}" class="ums-btn-primary">Register</a>
-            </div>
+            @auth
+                <!-- Authenticated User Nav with Dropdown -->
+                <div class="ums-nav-links relative">
+                    <button class="ums-link dropdown-toggle" id="userDropdown" onclick="toggleDropdown()">
+                        Hi, {{ Auth::user()->userName }}! ▼
+                    </button>
+                    <div class="dropdown-menu absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-20 hidden" id="dropdownMenu">
+                        <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Update Profile</a>
+                        <form method="POST" action="{{ route('logout') }}" class="block">
+                            @csrf
+                            <button type="submit" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Logout</button>
+                        </form>
+                    </div>
+                </div>
+            @else
+                <!-- Guest Nav -->
+                <div class="ums-nav-links">
+                    <a href="{{ route('login') }}" class="ums-link">Login</a>
+                    <a href="{{ route('register') }}" class="ums-btn-primary">Register</a>
+                </div>
+            @endauth
 
         </div>
     </div>
+</nav>
 </nav>
 
 
