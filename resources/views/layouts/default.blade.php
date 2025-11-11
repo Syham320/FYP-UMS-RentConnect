@@ -11,6 +11,7 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ asset('css/utils/base.css') }}">
 
+    @yield('head')
 
 </head>
 
@@ -38,42 +39,44 @@ document.addEventListener('click', function(event) {
 
 <body class="bg-gray-100">
 
+    @yield('navbar')
+    @if(!isset($hideDefaultNavbar) || !$hideDefaultNavbar)
     <nav class="ums-navbar">
-    <div class="ums-container">
-        <div class="ums-nav-content">
+        <div class="ums-container">
+            <div class="ums-nav-content">
 
-            <!-- Logo -->
-            <a href="/" class="ums-brand">
-                <img src="{{ asset('images/profiles/UMSRentConnect_logo.svg') }}"
-                    alt="UMS RentConnect Logo" class="ums-logo">
-            </a>
+                <!-- Logo -->
+                <a href="/" class="ums-brand">
+                    <img src="{{ asset('images/profiles/UMSRentConnect_logo.svg') }}"
+                        alt="UMS RentConnect Logo" class="ums-logo">
+                </a>
 
-            @auth
-                <!-- Authenticated User Nav with Dropdown -->
-                <div class="ums-nav-links relative">
-                    <button class="ums-link dropdown-toggle" id="userDropdown" onclick="toggleDropdown()">
-                        Hi, {{ Auth::user()->userName }}! ▼
-                    </button>
-                    <div class="dropdown-menu absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-20 hidden" id="dropdownMenu">
-                        <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Update Profile</a>
-                        <form method="POST" action="{{ route('logout') }}" class="block">
-                            @csrf
-                            <button type="submit" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Logout</button>
-                        </form>
+                @auth
+                    <!-- Authenticated User Nav with Dropdown -->
+                    <div class="ums-nav-links relative">
+                        <button class="ums-link dropdown-toggle" id="userDropdown" onclick="toggleDropdown()">
+                            Hi, {{ Auth::user()->userName }}! ▼
+                        </button>
+                        <div class="dropdown-menu absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-20 hidden" id="dropdownMenu">
+                            <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Update Profile</a>
+                            <form method="POST" action="{{ route('logout') }}" class="block">
+                                @csrf
+                                <button type="submit" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Logout</button>
+                            </form>
+                        </div>
                     </div>
-                </div>
-            @else
-                <!-- Guest Nav -->
-                <div class="ums-nav-links">
-                    <a href="{{ route('login') }}" class="ums-link">Login</a>
-                    <a href="{{ route('register') }}" class="ums-btn-primary">Register</a>
-                </div>
-            @endauth
+                @else
+                    <!-- Guest Nav -->
+                    <div class="ums-nav-links">
+                        <a href="{{ route('login') }}" class="ums-link">Login</a>
+                        <a href="{{ route('register') }}" class="ums-btn-primary">Register</a>
+                    </div>
+                @endauth
 
+            </div>
         </div>
-    </div>
-</nav>
-</nav>
+    </nav>
+    @endif
 
 
 

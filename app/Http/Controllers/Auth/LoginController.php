@@ -30,7 +30,7 @@ class LoginController extends Controller
             $user = Auth::user();
             switch ($user->userRole) {
                 case 'Student':
-                    return redirect('/student/dashboard');
+                    return redirect('/student/home');
                 case 'Landlord':
                     return redirect('/landlord/dashboard');
                 case 'Admin':

@@ -1,6 +1,6 @@
-@extends('layouts.default')
+@extends(Auth::user()->userRole === 'Student' ? 'layouts.student' : 'layouts.default')
 
-@section('content')
+@section(Auth::user()->userRole === 'Student' ? 'student-content' : 'content')
 <div class="container mx-auto px-4 py-8">
     <div class="max-w-md mx-auto bg-white p-6 rounded-lg shadow-md relative">
         <!-- Close Button -->

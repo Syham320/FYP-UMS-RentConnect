@@ -26,6 +26,24 @@
         </div>
     </div>
 
+    <!-- Profile Stats -->
+    <div class="container mx-auto px-4 -mt-8 relative z-10">
+        <div class="profile-stats">
+            <div class="stat-card">
+                <div class="stat-number">12</div>
+                <div class="stat-label">RENTAL REQUESTS</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">8</div>
+                <div class="stat-label">BOOKMARKS</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">5</div>
+                <div class="stat-label">REVIEWS</div>
+            </div>
+        </div>
+    </div>
+
     <!-- Profile Details -->
     <div class="container mx-auto px-4 mt-8">
         <div class="profile-details">
@@ -44,7 +62,10 @@
                         <div class="detail-label">Phone Number</div>
                         <div class="detail-value">{{ Auth::user()->contactInfo ?: 'Not provided' }}</div>
                     </div>
-
+                    <div>
+                        <div class="detail-label">Role</div>
+                        <div class="detail-value">{{ Auth::user()->role }}</div>
+                    </div>
                 </div>
             </div>
 

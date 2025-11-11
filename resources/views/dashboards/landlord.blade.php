@@ -1,56 +1,73 @@
-@extends('layouts.default')
+@extends('layouts.landlord')
 
-@section('content')
-<div class="container mx-auto px-4 py-8">
-    <div class="max-w-4xl mx-auto">
-        <h1 class="text-4xl font-bold mb-8 text-center text-gray-800">Landlord Dashboard</h1>
+@section('head')
+@parent
+<link rel="stylesheet" href="{{ asset('css/landlord/profile.css') }}">
+@endsection
 
-        <!-- Profile Card -->
-        <div class="bg-white rounded-lg shadow-lg p-8 mb-8">
-            <div class="flex flex-col md:flex-row items-center md:items-start space-y-6 md:space-y-0 md:space-x-8">
-                <!-- Profile Picture -->
-                <div class="flex-shrink-0">
-                    @if(Auth::user()->profileImg)
-                        <img src="{{ asset('storage/' . Auth::user()->profileImg) }}" alt="Profile Picture" class="w-32 h-32 rounded-full object-cover border-4 border-green-500">
-                    @else
-                        <div class="w-32 h-32 rounded-full bg-gray-300 flex items-center justify-center border-4 border-green-500">
-                            <span class="text-4xl text-gray-600">{{ substr(Auth::user()->userName, 0, 1) }}</span>
-                        </div>
-                    @endif
-                </div>
-
-                <!-- User Information -->
-                <div class="flex-grow text-center md:text-left">
-                    <h2 class="text-3xl font-semibold text-gray-800 mb-4">Welcome, {{ Auth::user()->userName }}!</h2>
-                    <div class="space-y-3">
-                        <div class="flex flex-col md:flex-row md:items-center">
-                            <span class="font-medium text-gray-600 md:w-32">Full Name:</span>
-                            <span class="text-gray-800">{{ Auth::user()->userName }}</span>
-                        </div>
-                        <div class="flex flex-col md:flex-row md:items-center">
-                            <span class="font-medium text-gray-600 md:w-32">Email:</span>
-                            <span class="text-gray-800">{{ Auth::user()->userEmail }}</span>
-                        </div>
-                        <div class="flex flex-col md:flex-row md:items-center">
-                            <span class="font-medium text-gray-600 md:w-32">Contact:</span>
-                            <span class="text-gray-800">{{ Auth::user()->contactInfo ?: 'Not provided' }}</span>
-                        </div>
+@section('landlord-content')
+<div class="profile-container">
+    <!-- Profile Header -->
+    <div class="profile-header">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-center">
+                @if(Auth::user()->profileImg)
+                    <img src="{{ asset('storage/' . Auth::user()->profileImg) }}" alt="Profile" class="profile-avatar">
+                @else
+                    <div class="profile-avatar bg-gray-400 flex items-center justify-center">
+                        <span class="text-4xl text-white font-bold">{{ substr(Auth::user()->userName, 0, 1) }}</span>
                     </div>
+                @endif
+                <div class="ml-6">
+                    <h1 class="profile-name">{{ Auth::user()->userName }}</h1>
+                    <p class="profile-role">{{ Auth::user()->role }}</p>
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- Action Buttons -->
-        <div class="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="{{ route('profile.edit') }}" class="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg font-semibold transition duration-200 text-center">
-                Edit Profile
-            </a>
-            <form method="POST" action="{{ route('logout') }}" class="inline">
-                @csrf
-                <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-lg font-semibold transition duration-200">
-                    Logout
-                </button>
-            </form>
+    <!-- Profile Details -->
+    <div class="container mx-auto px-4 mt-8">
+        <div class="profile-details">
+            <div class="detail-section">
+                <h3 class="text-xl font-semibold text-gray-800 mb-4">Personal Information</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <div class="detail-label">Full Name</div>
+                        <div class="detail-value">{{ Auth::user()->userName }}</div>
+                    </div>
+                    <div>
+                        <div class="detail-label">Email Address</div>
+                        <div class="detail-value">{{ Auth::user()->userEmail }}</div>
+                    </div>
+                    <div>
+                        <div class="detail-label">Phone Number</div>
+                        <div class="detail-value">{{ Auth::user()->contactInfo ?: 'Not provided' }}</div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="detail-section">
+                <h3 class="text-xl font-semibold text-gray-800 mb-4">Account Information</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <div class="detail-label">Member Since</div>
+                        <div class="detail-value">{{ Auth::user()->created_at->format('F d, Y') }}</div>
+                    </div>
+                    <div>
+                        <div class="detail-label">Last Updated</div>
+                        <div class="detail-value">{{ Auth::user()->updated_at->format('F d, Y') }}</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Edit Profile Button -->
+            <div class="detail-section text-center">
+                <a href="{{ route('profile.edit') }}" class="inline-block bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white px-8 py-3 rounded-lg font-semibold transition-all duration-200 transform hover:scale-105">
+                    Edit Profile
+                </a>
+            </div>
         </div>
     </div>
 </div>
