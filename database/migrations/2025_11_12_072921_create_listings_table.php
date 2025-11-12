@@ -21,10 +21,10 @@ return new class extends Migration
             $table->string('roomType', 50);
             $table->enum('availabilityStatus', ['approved', 'pending', 'rejected'])->default('pending');
             $table->timestamp('createdDate')->useCurrent();
-            $table->unsignedBigInteger('userID');
+            $table->unsignedBigInteger('user_id');
             $table->timestamps();
 
-            $table->foreign('userID')->references('userID')->on('users')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->index(['availabilityStatus', 'createdDate']);
         });
     }

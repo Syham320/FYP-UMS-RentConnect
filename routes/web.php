@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ListingController;
 
 // Landing page
 Route::get('/', function () {
@@ -104,6 +105,10 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/landlord/faqs', function () {
             return view('landlord.faqs');
         })->name('landlord.faqs');
+
+        Route::get('/landlord/create-listing', [App\Http\Controllers\ListingController::class, 'create'])->name('landlord.create-listing');
+        Route::post('/landlord/store-listing', [App\Http\Controllers\ListingController::class, 'store'])->name('landlord.store-listing');
+
     });
 
     Route::get('/admin/dashboard', function () {
