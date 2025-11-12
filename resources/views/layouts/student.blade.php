@@ -13,7 +13,7 @@
     <div class="ums-container">
         <div class="ums-nav-content">
             <!-- Logo -->
-            <a href="/" class="ums-brand">
+            <a href="javascript:location.reload()" class="ums-brand">
                 <img src="{{ asset('images/profiles/UMSRentConnect_logo.svg') }}"
                     alt="UMS RentConnect Logo" class="ums-logo">
             </a>
