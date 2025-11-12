@@ -43,10 +43,25 @@ class ListingController extends Controller
             'contactInfo' => $request->contactInfo,
             'roomType' => $request->roomType,
             'availabilityStatus' => 'pending',
-            'userID' => Auth::id(),
-            'images' => json_encode($imagePaths), // Store as JSON
+            'user_id' => Auth::id(),
+            'images' => $imagePaths,
         ]);
 
-        return redirect()->route('landlord.approved-listings')->with('success', 'Listing created successfully!');
+        // After creating a listing keep user on their listings overview (not the approved-only page)
+        return redirect()->route('landlord.my-listings')->with('success', 'Listing created successfully!');
+    }
+
+    /**
+     * Show only the listings that are approved for the currently authenticated landlord.
+     */
+    public function approvedListings()
+    {
+        // Show both approved and pending listings for the landlord so pending items are visible with a 'Pending' badge
+        $listings = Listing::where('user_id', Auth::id())
+            ->whereIn('availabilityStatus', ['approved', 'pending'])
+            ->orderBy('createdDate', 'desc')
+            ->get();
+
+        return view('landlord.approved-listings', compact('listings'));
     }
 }

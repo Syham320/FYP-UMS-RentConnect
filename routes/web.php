@@ -86,9 +86,7 @@ Route::middleware(['auth'])->group(function () {
             return view('landlord.rental-requests');
         })->name('landlord.rental-requests');
 
-        Route::get('/landlord/approved-listings', function () {
-            return view('landlord.approved-listings');
-        })->name('landlord.approved-listings');
+        Route::get('/landlord/approved-listings', [ListingController::class, 'approvedListings'])->name('landlord.approved-listings');
 
         Route::get('/landlord/chat', function () {
             return view('landlord.chat');

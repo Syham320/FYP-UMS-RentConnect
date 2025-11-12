@@ -19,18 +19,19 @@ class Listing extends Model
         'contactInfo',
         'roomType',
         'availabilityStatus',
-        'userID',
+        'user_id',
         'images',
     ];
 
     protected $casts = [
-        'images' => 'array', // Cast images to array
+        'images' => 'array', // Cast images JSON to PHP array on retrieval
         'price' => 'decimal:2',
         'createdDate' => 'datetime',
     ];
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'userID', 'userID');
+        // listings table stores the foreign key as `user_id` that references users.id
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 }
