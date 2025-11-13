@@ -19,19 +19,12 @@
             </a>
 
             @auth
-                <!-- Authenticated User Nav with Dropdown -->
-                <div class="ums-nav-links relative flex items-center space-x-4">
-                    <button class="ums-link dropdown-toggle" id="userDropdown" onclick="toggleDropdown()">
-                        Hi, {{ Auth::user()->userName }}! ▼
-                    </button>
-                    <div class="dropdown-menu absolute right-0 mt-4 w-48 bg-white rounded-md shadow-lg z-20 hidden" id="dropdownMenu">
-                        <form method="POST" action="{{ route('logout') }}" class="block">
-                            @csrf
-                            <button type="submit" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Logout</button>
-                        </form>
-                    </div>
+                <!-- Authenticated User Nav -->
+                <div class="ums-nav-links">
+                    Hi, {{ Auth::user()->userName }}!
                 </div>
             @endauth
+
         </div>
     </div>
 </nav>
@@ -86,7 +79,12 @@
                         <p class="text-xs text-gray-500 truncate">{{ Auth::user()->userEmail }}</p>
                     </div>
                 </a>
-            </div>
+                <form method="POST" action="{{ route('logout') }}" class="mt-2">
+                    @csrf
+                    <button type="submit" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-green-100 rounded-lg border border-gray-300 hover:border-green-500 transition duration-200">
+                        <i class="fas fa-sign-out-alt mr-2"></i>Logout
+                    </button>
+                </form>
         </div>
     </aside>
 

@@ -49,4 +49,9 @@ class User extends Authenticatable
             'userRole' => 'string',
         ];
     }
+
+        public function bookmarks()
+    {
+        return $this->hasMany(Bookmark::class, 'user_id');
+    }
 }

@@ -6,8 +6,8 @@
 @endsection
 
 @section('content')
-<div class="container mx-auto px-4 py-8">
-    <div class="max-w-md mx-auto bg-white p-6 rounded-lg shadow-md">
+<div class="min-h-screen flex items-center justify-center px-4 py-8">
+    <div class="max-w-md w-full bg-white p-6 rounded-lg shadow-md">
         <h2 class="text-2xl font-bold mb-6 text-center"><i class="fas fa-sign-in-alt mr-2"></i>Login</h2>
 
         @if($errors->any())

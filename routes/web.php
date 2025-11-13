@@ -28,9 +28,7 @@ Route::middleware(['auth'])->group(function () {
 
     // Role-based dashboards
     Route::middleware('role:Student')->group(function () {
-        Route::get('/student/home', function () {
-            return view('student.home');
-        })->name('student.home');
+        Route::get('/student/home', [App\Http\Controllers\ListingController::class, 'studentHome'])->name('student.home');
 
         Route::get('/student/dashboard', function () {
             return view('dashboards.student');
@@ -78,9 +76,7 @@ Route::middleware(['auth'])->group(function () {
             return view('dashboards.landlord');
         })->name('landlord.dashboard');
 
-        Route::get('/landlord/my-listings', function () {
-            return view('landlord.my-listings');
-        })->name('landlord.my-listings');
+        Route::get('/landlord/my-listings', [ListingController::class, 'myListings'])->name('landlord.my-listings');
 
         Route::get('/landlord/rental-requests', function () {
             return view('landlord.rental-requests');
@@ -106,10 +102,23 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('/landlord/create-listing', [App\Http\Controllers\ListingController::class, 'create'])->name('landlord.create-listing');
         Route::post('/landlord/store-listing', [App\Http\Controllers\ListingController::class, 'store'])->name('landlord.store-listing');
+        Route::get('/landlord/edit-listing/{id}', [App\Http\Controllers\ListingController::class, 'edit'])->name('landlord.edit-listing');
+        Route::put('/landlord/update-listing/{id}', [App\Http\Controllers\ListingController::class, 'update'])->name('landlord.update-listing');
 
     });
 
-    Route::get('/admin/dashboard', function () {
-        return view('dashboards.admin');
-    })->middleware('role:Admin')->name('admin.dashboard');
+    Route::middleware('role:Admin')->group(function () {
+        Route::get('/admin/dashboard', function () {
+            return view('dashboards.admin');
+        })->name('admin.dashboard');
+
+        Route::get('/admin/manage-listings', [ListingController::class, 'manageListings'])->name('admin.manage-listings');
+        Route::post('/admin/approve-listing/{id}', [ListingController::class, 'approveListing'])->name('admin.approve-listing');
+        Route::post('/admin/reject-listing/{id}', [ListingController::class, 'rejectListing'])->name('admin.reject-listing');
+
+        Route::get('/admin/users', function () {
+            $users = \App\Models\User::all();
+            return view('admin.users', compact('users'));
+        })->name('admin.users');
+    });
 });

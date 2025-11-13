@@ -29,24 +29,15 @@
             </div>
 
             @auth
-                <!-- Authenticated User Nav with Dropdown and Bookmark Icon -->
-                <div class="ums-nav-links relative flex items-center space-x-4">
-                    <a href="{{ route('student.bookmarks') }}" class="text-gray-700 hover:text-blue-600" title="Bookmarked Listings">
-                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z"/>
-                        </svg>
+                <!-- Authenticated User Nav -->
+                <div class="ums-nav-links flex items-center space-x-4">
+                    <a href="{{ route('student.bookmarks') }}" class="text-gray-700 hover:text-blue-500 transition duration-200" title="Bookmarks">
+                        <i class="fas fa-bookmark text-xl"></i>
                     </a>
-                    <button class="ums-link dropdown-toggle" id="userDropdown" onclick="toggleDropdown()">
-                        Hi, {{ Auth::user()->userName }}! ▼
-                    </button>
-                    <div class="dropdown-menu absolute right-0 mt-4 w-48 bg-white rounded-md shadow-lg z-20 hidden" id="dropdownMenu">
-                        <form method="POST" action="{{ route('logout') }}" class="block">
-                            @csrf
-                            <button type="submit" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Logout</button>
-                        </form>
-                    </div>
+                    Hi, {{ Auth::user()->userName }}!
                 </div>
             @endauth
+
         </div>
     </div>
 </nav>
@@ -104,6 +95,12 @@
                         <p class="text-xs text-gray-500 truncate">{{ Auth::user()->userEmail }}</p>
                     </div>
                 </a>
+                <form method="POST" action="{{ route('logout') }}" class="mt-2">
+                    @csrf
+                    <button type="submit" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-blue-100 rounded-lg border border-gray-300 hover:border-blue-500 transition duration-200">
+                        <i class="fas fa-sign-out-alt mr-2"></i>Logout
+                    </button>
+                </form>
             </div>
         </div>
     </aside>
