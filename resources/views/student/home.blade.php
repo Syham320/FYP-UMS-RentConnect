@@ -163,20 +163,42 @@ document.addEventListener('DOMContentLoaded', function() {
             e.stopPropagation();
             const listingId = this.dataset.listingId;
             const icon = this.querySelector('i');
+            const button = this;
 
-            // Toggle bookmark state
-            if (icon.classList.contains('text-blue-500')) {
-                icon.classList.remove('text-blue-500');
-                icon.classList.add('text-gray-400');
-                // Remove from bookmarks
-            } else {
-                icon.classList.remove('text-gray-400');
-                icon.classList.add('text-blue-500');
-                // Add to bookmarks
-            }
+            // Disable button during request
+            button.disabled = true;
 
-            // Here you would typically send an AJAX request to save/remove bookmark
-            console.log('Toggle bookmark for listing:', listingId);
+            // Send AJAX request to toggle bookmark
+            fetch(`/student/bookmarks/toggle/${listingId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Toggle bookmark state based on server response
+                    if (data.bookmarked) {
+                        icon.classList.remove('text-gray-400');
+                        icon.classList.add('text-blue-500');
+                    } else {
+                        icon.classList.remove('text-blue-500');
+                        icon.classList.add('text-gray-400');
+                    }
+                } else {
+                    alert(data.message || 'Failed to toggle bookmark');
+                }
+            })
+            .catch(error => {
+                console.error('Error toggling bookmark:', error);
+                alert('An error occurred while toggling bookmark');
+            })
+            .finally(() => {
+                // Re-enable button
+                button.disabled = false;
+            });
         });
     });
 

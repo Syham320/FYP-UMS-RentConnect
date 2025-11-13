@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Listing;
+use App\Models\Bookmark;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
@@ -182,5 +183,152 @@ class ListingController extends Controller
         }
     
         return view('student.home', compact('listings', 'bookmarkedListings'));
+    }
+
+    /**
+     * Display bookmarked listings for the student.
+     */
+    public function bookmarks()
+    {
+        $bookmarks = Auth::user()->bookmarks()
+            ->with('listing.user')
+            ->orderBy('bookmarkedDate', 'desc')
+            ->get();
+
+        // Filter out bookmarks where listing might be deleted or not approved
+        $bookmarkedListings = $bookmarks->filter(function($bookmark) {
+            return $bookmark->listing && $bookmark->listing->availabilityStatus === 'approved';
+        })->map(function($bookmark) {
+            return $bookmark->listing;
+        });
+
+        return view('student.bookmarks', compact('bookmarkedListings'));
+    }
+
+    /**
+     * Toggle bookmark for a listing.
+     */
+    public function toggleBookmark($listingId)
+    {
+        try {
+            $listing = Listing::findOrFail($listingId);
+            
+            // Check if listing is approved
+            if ($listing->availabilityStatus !== 'approved') {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Cannot bookmark this listing.'
+                ], 403);
+            }
+
+            $userId = Auth::id();
+            $bookmark = Bookmark::where('user_id', $userId)
+                ->where('listingID', $listingId)
+                ->first();
+
+            if ($bookmark) {
+                // Remove bookmark
+                $bookmark->delete();
+                return response()->json([
+                    'success' => true,
+                    'bookmarked' => false,
+                    'message' => 'Bookmark removed successfully.'
+                ]);
+            } else {
+                // Add bookmark
+                Bookmark::create([
+                    'user_id' => $userId,
+                    'listingID' => $listingId,
+                    'bookmarkedDate' => now()
+                ]);
+                return response()->json([
+                    'success' => true,
+                    'bookmarked' => true,
+                    'message' => 'Bookmark added successfully.'
+                ]);
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'An error occurred while toggling bookmark.'
+            ], 500);
+        }
+    }
+
+    /**
+     * Search and filter listings.
+     */
+    public function search(Request $request)
+    {
+        $query = Listing::where('availabilityStatus', 'approved')->with('user');
+
+        // Keyword search (search in title, description, and location)
+        if ($request->filled('query')) {
+            $searchTerm = $request->input('query');
+            $query->where(function($q) use ($searchTerm) {
+                $q->where('listingTitle', 'like', '%' . $searchTerm . '%')
+                  ->orWhere('listingDescription', 'like', '%' . $searchTerm . '%')
+                  ->orWhere('location', 'like', '%' . $searchTerm . '%');
+            });
+        }
+
+        // Location filter
+        if ($request->filled('location')) {
+            $query->where('location', 'like', '%' . $request->input('location') . '%');
+        }
+
+        // Price range filter
+        if ($request->filled('price_range')) {
+            switch ($request->input('price_range')) {
+                case '0-500':
+                    $query->whereBetween('price', [0, 500]);
+                    break;
+                case '500-1000':
+                    $query->whereBetween('price', [500, 1000]);
+                    break;
+                case '1000+':
+                    $query->where('price', '>=', 1000);
+                    break;
+            }
+        }
+
+        // Room type filter
+        if ($request->filled('room_type')) {
+            $query->where('roomType', $request->input('room_type'));
+        }
+
+        // Sorting
+        $sortBy = $request->input('sort', 'newest');
+        switch ($sortBy) {
+            case 'price-low':
+                $query->orderBy('price', 'asc');
+                break;
+            case 'price-high':
+                $query->orderBy('price', 'desc');
+                break;
+            case 'newest':
+            default:
+                $query->orderBy('createdDate', 'desc');
+                break;
+        }
+
+        $listings = $query->get();
+
+        // Get bookmarked listings for the current user
+        $bookmarkedListings = [];
+        if (Auth::check()) {
+            $bookmarkedListings = Auth::user()->bookmarks()->pluck('listingID')->toArray();
+        }
+
+        // Get filter values for maintaining state
+        $filters = [
+            'query' => $request->input('query'),
+            'location' => $request->input('location'),
+            'price_range' => $request->input('price_range'),
+            'room_type' => $request->input('room_type'),
+            'sort' => $sortBy
+        ];
+
+        return view('student.search', compact('listings', 'bookmarkedListings', 'filters'));
     }
 }

@@ -38,13 +38,10 @@ Route::middleware(['auth'])->group(function () {
             return view('student.rental-requests');
         })->name('student.rental-requests');
 
-        Route::get('/student/bookmarks', function () {
-            return view('student.bookmarks');
-        })->name('student.bookmarks');
+        Route::get('/student/bookmarks', [App\Http\Controllers\ListingController::class, 'bookmarks'])->name('student.bookmarks');
+        Route::post('/student/bookmarks/toggle/{listingId}', [App\Http\Controllers\ListingController::class, 'toggleBookmark'])->name('student.bookmarks.toggle');
 
-        Route::get('/student/search', function () {
-            return view('student.search');
-        })->name('student.search');
+        Route::get('/student/search', [App\Http\Controllers\ListingController::class, 'search'])->name('student.search');
 
         Route::get('/student/accommodation', function () {
             return view('student.accommodation');

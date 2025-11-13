@@ -9,8 +9,9 @@
     background: white;
     border-radius: 0.5rem;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
+    overflow: visible;
     transition: transform 0.2s, box-shadow 0.2s;
+    position: relative;
 }
 
 .listing-card:hover {
@@ -52,4 +53,33 @@
     color: #4b5563;
     font-size: 0.875rem;
     line-height: 1.4;
+}
+
+/* Bookmark button styling */
+.bookmark-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 10;
+    background: white;
+    padding: 0.5rem;
+    border-radius: 9999px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bookmark-btn:hover {
+    background: #f3f4f6;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    transform: scale(1.1);
+}
+
+.bookmark-btn i {
+    font-size: 1.25rem;
+    transition: color 0.2s ease-in-out;
 }
