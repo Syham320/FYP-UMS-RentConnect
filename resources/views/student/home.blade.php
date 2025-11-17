@@ -207,8 +207,42 @@ document.addEventListener('DOMContentLoaded', function() {
         btn.addEventListener('click', function(e) {
             e.stopPropagation();
             const listingId = this.dataset.listingId;
-            // Here you would typically show a form or send request
-            alert('Submit rental request for listing: ' + listingId);
+            const button = this;
+
+            // Disable button during request
+            button.disabled = true;
+            button.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Submitting...';
+
+            // Send AJAX request to submit rental request
+            fetch('/student/rental-requests', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({
+                    listingID: listingId
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Show success message and redirect
+                    alert(data.message);
+                    window.location.href = '/student/rental-requests';
+                } else {
+                    alert(data.message || 'Failed to submit rental request');
+                }
+            })
+            .catch(error => {
+                console.error('Error submitting rental request:', error);
+                alert('An error occurred while submitting the rental request');
+            })
+            .finally(() => {
+                // Re-enable button
+                button.disabled = false;
+                button.innerHTML = '<i class="fas fa-paper-plane mr-2"></i>Submit Request';
+            });
         });
     });
 });

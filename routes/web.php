@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ListingController;
+use App\Http\Controllers\RentalRequestController;
 
 // Landing page
 Route::get('/', function () {
@@ -34,9 +35,8 @@ Route::middleware(['auth'])->group(function () {
             return view('dashboards.student');
         })->name('student.dashboard');
 
-        Route::get('/student/rental-requests', function () {
-            return view('student.rental-requests');
-        })->name('student.rental-requests');
+        Route::get('/student/rental-requests', [RentalRequestController::class, 'studentRequests'])->name('student.rental-requests');
+        Route::post('/student/rental-requests', [RentalRequestController::class, 'store'])->name('student.rental-requests.store');
 
         Route::get('/student/bookmarks', [App\Http\Controllers\ListingController::class, 'bookmarks'])->name('student.bookmarks');
         Route::post('/student/bookmarks/toggle/{listingId}', [App\Http\Controllers\ListingController::class, 'toggleBookmark'])->name('student.bookmarks.toggle');
@@ -75,9 +75,8 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('/landlord/my-listings', [ListingController::class, 'myListings'])->name('landlord.my-listings');
 
-        Route::get('/landlord/rental-requests', function () {
-            return view('landlord.rental-requests');
-        })->name('landlord.rental-requests');
+        Route::get('/landlord/rental-requests', [RentalRequestController::class, 'landlordRequests'])->name('landlord.rental-requests');
+        Route::post('/landlord/rental-requests/{requestID}/status', [RentalRequestController::class, 'updateStatus'])->name('landlord.rental-requests.update-status');
 
         Route::get('/landlord/approved-listings', [ListingController::class, 'approvedListings'])->name('landlord.approved-listings');
 
