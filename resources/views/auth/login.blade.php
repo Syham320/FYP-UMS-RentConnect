@@ -3,6 +3,7 @@
 @section('head')
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<link rel="stylesheet" href="{{ asset('css/utils/auth.css') }}">
 @endsection
 
 @section('content')
@@ -29,7 +30,7 @@
             <div class="mb-4 relative">
                 <label for="password" class="block text-gray-700">Password</label>
                 <input type="password" id="password" name="password" placeholder="Enter your password" class="w-full px-3 py-2 border rounded-lg pr-10" required>
-                <button type="button" onclick="togglePassword('password')" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-gray-700" style="top: 1.5rem;">
+                <button type="button" onclick="togglePassword('password')" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-gray-700 auth-password-toggle">
                     <i id="passwordIcon" class="fas fa-eye w-5 h-5"></i>
                 </button>
             </div>

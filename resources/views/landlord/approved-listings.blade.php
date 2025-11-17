@@ -31,7 +31,7 @@
                         @if(count($images) > 0)
                            <img src="{{ \Illuminate\Support\Facades\Storage::disk('public')->url($images[0]) }}" alt="{{ $listing->listingTitle }}" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22%3E%3Crect fill=%22%23ddd%22 width=%22100%22 height=%22100%22/%3E%3C/svg%3E'">
                         @else
-                            <div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; background:#f3f4f6; color:#9ca3af;">No Image</div>
+                            <div class="no-image-placeholder">No Image</div>
                         @endif
                     </div>
                     <div class="listing-card-content">

@@ -5,36 +5,12 @@
 @section('head')
 <!-- Font Awesome -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-<style>
-
-    .admin-simple-nav {
-        background: linear-gradient(135deg, #dc2626 0%, #ea580c 100%);
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    }
-    
-    .admin-simple-nav .logo-link:hover {
-        opacity: 0.9;
-        transform: translateY(-1px);
-        transition: all 0.2s ease;
-    }
-    
-    .admin-simple-nav .user-info-box {
-        background: rgba(255, 255, 255, 0.2);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.3);
-    }
-    
-    .admin-simple-nav .user-info-box:hover {
-        background: rgba(255, 255, 255, 0.3);
-        transform: translateY(-2px);
-        transition: all 0.3s ease;
-    }
-</style>
+<link rel="stylesheet" href="{{ asset('css/admin/navbar.css') }}">
 @endsection
 
 @section('navbar')
 
-<nav class="admin-simple-nav shadow-lg">
+<nav class="admin-navbar">
     <div class="container mx-auto px-4">
         <div class="flex items-center justify-between h-16">
             <!-- Logo -->
@@ -44,6 +20,10 @@
                 <span class="text-white font-bold text-xl hidden md:block">Admin Panel</span>
             </a>
 
+            <!-- Right side: Hi username -->
+            <div class="text-white font-medium">
+                Hi, {{ Auth::user()->userName ?? 'Admin' }}!
+            </div>
         </div>
     </div>
 </nav>
