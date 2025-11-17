@@ -24,7 +24,9 @@
                     @foreach($listings as $listing)
                         <tr>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm font-medium text-gray-900">{{ $listing->listingTitle }}</div>
+                                <div class="text-sm font-medium text-gray-900">
+                                    {{ $listing->listingTitle }}
+                                </div>
                                 <div class="text-sm text-gray-500">{{ Str::limit($listing->listingDescription, 50) }}</div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
@@ -43,6 +45,9 @@
                                 {{ $listing->createdDate?->format('Y-m-d') }}
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                <a href="{{ route('admin.listing-detail', $listing->listingID) }}" class="text-blue-600 hover:text-blue-900 mr-4">
+                                    <i class="fas fa-eye mr-1"></i>View Detail
+                                </a>
                                 @if($listing->availabilityStatus === 'pending')
                                     <form method="POST" action="{{ route('admin.approve-listing', $listing->listingID) }}" class="inline">
                                         @csrf

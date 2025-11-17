@@ -153,6 +153,13 @@ class ListingController extends Controller
         return view('admin.manage-listings', compact('listings'));
     }
 
+    public function showListing($id)
+    {
+        $listing = Listing::with('user')->findOrFail($id);
+
+        return view('admin.listing-detail', compact('listing'));
+    }
+
     public function approveListing($id)
     {
         $listing = Listing::findOrFail($id);

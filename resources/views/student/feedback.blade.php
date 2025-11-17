@@ -3,18 +3,19 @@
 @section('student-content')
 <div class="max-w-6xl mx-auto">
     <h1 class="text-4xl font-bold mb-8 text-center text-gray-800">Feedback & Support</h1>
-    <p class="text-gray-600 text-center mb-8">Share your feedback and get help with frequently asked questions.</p>
 
     <!-- Feedback Section -->
     <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
         <h2 class="text-2xl font-semibold text-gray-800 mb-6">Share Your Feedback</h2>
-        <p class="text-gray-600 mb-6">We value your feedback! Help us improve the UMS Rent Connect platform by sharing your thoughts, suggestions, or reporting any issues you've encountered.</p>
+
+        @if(session('success'))
+            <div class="mb-4 text-green-700 bg-green-100 p-4 rounded">{{ session('success') }}</div>
+        @endif
 
         <div class="text-center">
-            <button class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-8 rounded-lg transition duration-300 text-lg">
+            <a href="{{ route('student.submit-feedback') }}" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-8 rounded-lg transition duration-300 text-lg inline-block">
                 Submit Feedback
-            </button>
-            <p class="text-sm text-gray-500 mt-3">Click here to open the feedback form</p>
+            </a>
         </div>
     </div>
 
@@ -22,37 +23,37 @@
     <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
         <h2 class="text-2xl font-semibold text-gray-800 mb-6">Your Recent Feedback</h2>
 
-        <!-- Mockup of submitted feedback -->
-        <div class="space-y-4">
-            <div class="border border-gray-200 rounded-lg p-4">
-                <div class="flex justify-between items-start mb-2">
-                    <div>
-                        <h3 class="text-lg font-medium text-gray-900">App Performance Issue</h3>
-                        <p class="text-sm text-gray-600">Submitted on: October 15, 2023 at 3:45 PM</p>
+        @if($feedbacks->count())
+            <div class="space-y-4">
+                @foreach($feedbacks as $feedback)
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <div class="flex justify-between items-start mb-2">
+                            <div>
+                                <h3 class="text-lg font-medium text-gray-900">{{ $feedback->subject }}</h3>
+                                <p class="text-sm text-gray-600">Submitted on: {{ $feedback->timeStamp->format('F d, Y \a\t g:i A') }}</p>
+                            </div>
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+                                @if($feedback->status === 'In Review') bg-yellow-100 text-yellow-800
+                                @elseif($feedback->status === 'Resolved') bg-green-100 text-green-800
+                                @else bg-gray-100 text-gray-800 @endif">
+                                {{ $feedback->status }}
+                            </span>
+                        </div>
+                        <p class="text-sm text-gray-600">Type: {{ $feedback->feedbackType }} | Priority: {{ $feedback->priority }}</p>
+                        <p class="text-sm text-gray-700 mt-2">{{ Str::limit($feedback->feedbackText, 100) }}</p>
+                        <button class="mt-2 text-blue-600 hover:text-blue-800 text-sm font-medium" onclick="openFeedbackModal({{ $feedback->feedbackID }})">View Details</button>
                     </div>
-                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                        In Review
-                    </span>
-                </div>
-                <p class="text-sm text-gray-600">Type: Bug Report | Priority: Medium</p>
-                <p class="text-sm text-gray-700 mt-2">The search functionality is slow when filtering by location...</p>
+                @endforeach
             </div>
-
-            <div class="border border-gray-200 rounded-lg p-4">
-                <div class="flex justify-between items-start mb-2">
-                    <div>
-                        <h3 class="text-lg font-medium text-gray-900">Feature Request: Dark Mode</h3>
-                        <p class="text-sm text-gray-600">Submitted on: October 12, 2023 at 11:20 AM</p>
-                    </div>
-                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                        Resolved
-                    </span>
-                </div>
-                <p class="text-sm text-gray-600">Type: Feature Request | Priority: Low</p>
-                <p class="text-sm text-gray-700 mt-2">It would be great to have a dark mode option for better usability at night...</p>
+        @else
+            <div class="text-center py-8">
+                <p class="text-gray-500">You haven't submitted any feedback yet.</p>
             </div>
-        </div>
+        @endif
     </div>
 
-   
+
+</div>
+
+
 @endsection
