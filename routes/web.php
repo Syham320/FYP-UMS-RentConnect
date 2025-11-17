@@ -109,6 +109,10 @@ Route::middleware(['auth'])->group(function () {
             return view('dashboards.admin');
         })->name('admin.dashboard');
 
+        Route::get('/admin/home', function () {
+            return view('admin.home');
+        })->name('admin.home');
+
         Route::get('/admin/manage-listings', [ListingController::class, 'manageListings'])->name('admin.manage-listings');
         Route::post('/admin/approve-listing/{id}', [ListingController::class, 'approveListing'])->name('admin.approve-listing');
         Route::post('/admin/reject-listing/{id}', [ListingController::class, 'rejectListing'])->name('admin.reject-listing');
@@ -117,5 +121,17 @@ Route::middleware(['auth'])->group(function () {
             $users = \App\Models\User::all();
             return view('admin.users', compact('users'));
         })->name('admin.users');
+
+        Route::get('/admin/accommodation', function () {
+            return view('admin.accommodation');
+        })->name('admin.accommodation');
+
+        Route::get('/admin/feedback', function () {
+            return view('admin.feedback');
+        })->name('admin.feedback');
+
+        Route::get('/admin/faqs', function () {
+            return view('admin.faqs');
+        })->name('admin.faqs');
     });
 });

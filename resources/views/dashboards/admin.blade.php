@@ -1,31 +1,74 @@
-@extends('layouts.default')
+@extends('layouts.admin')
 
-@section('content')
-<div class="container mx-auto px-4 py-8">
-    <h1 class="text-3xl font-bold mb-6">Admin Dashboard</h1>
-    <p>Welcome, {{ Auth::user()->userName }}!</p>
-    <p>Role: {{ Auth::user()->userRole }}</p>
+@section('head')
+@parent
+<link rel="stylesheet" href="{{ asset('css/admin/profile.css') }}">
+@endsection
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-        <a href="{{ route('admin.manage-listings') }}" class="bg-blue-500 text-white p-6 rounded-lg shadow-md hover:bg-blue-600 transition">
-            <h3 class="text-xl font-semibold mb-2">Manage Listings</h3>
-            <p>Approve or reject pending listings</p>
-        </a>
-
-        <a href="{{ route('admin.users') }}" class="bg-green-500 text-white p-6 rounded-lg shadow-md hover:bg-green-600 transition">
-            <h3 class="text-xl font-semibold mb-2">Manage Users</h3>
-            <p>View and manage user accounts</p>
-        </a>
-
-        <a href="{{ route('profile.edit') }}" class="bg-purple-500 text-white p-6 rounded-lg shadow-md hover:bg-purple-600 transition">
-            <h3 class="text-xl font-semibold mb-2">Profile</h3>
-            <p>Edit your profile information</p>
-        </a>
+@section('admin-content')
+<div class="profile-container">
+    <!-- Profile Header -->
+    <div class="profile-header">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-center">
+                @if(Auth::user()->profileImg)
+                    <img src="{{ asset('storage/' . Auth::user()->profileImg) }}" alt="Profile" class="profile-avatar">
+                @else
+                    <div class="profile-avatar bg-gray-400 flex items-center justify-center">
+                        <span class="text-4xl text-white font-bold">{{ substr(Auth::user()->userName, 0, 1) }}</span>
+                    </div>
+                @endif
+                <div class="ml-6">
+                    <h1 class="profile-name">{{ Auth::user()->userName }}</h1>
+                    <p class="profile-role">{{ Auth::user()->role }}</p>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <form method="POST" action="{{ route('logout') }}" class="inline">
-        @csrf
-        <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded">Logout</button>
-    </form>
+    <!-- Profile Details -->
+    <div class="container mx-auto px-4 mt-8">
+        <div class="profile-details">
+            <div class="detail-section">
+                <h3 class="text-xl font-semibold text-gray-800 mb-4">Personal Information</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <div class="detail-label">Full Name</div>
+                        <div class="detail-value">{{ Auth::user()->userName }}</div>
+                    </div>
+                    <div>
+                        <div class="detail-label">Email Address</div>
+                        <div class="detail-value">{{ Auth::user()->userEmail }}</div>
+                    </div>
+                    <div>
+                        <div class="detail-label">Phone Number</div>
+                        <div class="detail-value">{{ Auth::user()->contactInfo ?: 'Not provided' }}</div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="detail-section">
+                <h3 class="text-xl font-semibold text-gray-800 mb-4">Account Information</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <div class="detail-label">Member Since</div>
+                        <div class="detail-value">{{ Auth::user()->created_at->format('F d, Y') }}</div>
+                    </div>
+                    <div>
+                        <div class="detail-label">Last Updated</div>
+                        <div class="detail-value">{{ Auth::user()->updated_at->format('F d, Y') }}</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Edit Profile Button -->
+            <div class="detail-section text-center">
+                <a href="{{ route('profile.edit') }}" class="inline-block bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white px-8 py-3 rounded-lg font-semibold transition-all duration-200 transform hover:scale-105">
+                    Edit Profile
+                </a>
+            </div>
+        </div>
+    </div>
 </div>
 @endsection

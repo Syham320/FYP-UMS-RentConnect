@@ -4,7 +4,7 @@
 <div class="container mx-auto px-4 py-8">
     <div class="max-w-md mx-auto bg-white p-6 rounded-lg shadow-md relative">
         <!-- Close Button -->
-        <button onclick="window.location.href='{{ Auth::user()->userRole === 'Student' ? route('student.dashboard') : (Auth::user()->userRole === 'Landlord' ? route('landlord.dashboard') : route('admin.dashboard')) }}'" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700 text-2xl font-bold">&times;</button>
+        <button onclick="window.location.href='{{ Auth::user()->userRole === 'Student' ? route('student.dashboard') : (Auth::user()->userRole === 'Landlord' ? route('landlord.dashboard') : route('admin.home')) }}'" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700 text-2xl font-bold">&times;</button>
 
         <!-- Current Profile Image Display -->
         <div class="mb-6 text-center">

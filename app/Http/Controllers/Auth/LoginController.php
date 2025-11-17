@@ -34,7 +34,7 @@ class LoginController extends Controller
                 case 'Landlord':
                     return redirect('/landlord/dashboard');
                 case 'Admin':
-                    return redirect('/admin/dashboard');
+                    return redirect('/admin/home');
                 default:
                     return redirect('/dashboard');
             }
