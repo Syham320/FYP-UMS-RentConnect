@@ -54,4 +54,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Bookmark::class, 'user_id');
     }
+
+    public function rentalRequests()
+    {
+        return $this->hasMany(RentalRequest::class, 'studentID', 'id');
+    }
 }

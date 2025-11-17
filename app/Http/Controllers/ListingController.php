@@ -175,14 +175,23 @@ class ListingController extends Controller
             ->with('user')
             ->orderBy('createdDate', 'desc')
             ->get();
-    
+
         // Get bookmarked listings for the current user
         $bookmarkedListings = [];
         if (Auth::check()) {
             $bookmarkedListings = Auth::user()->bookmarks()->pluck('listingID')->toArray();
         }
-    
-        return view('student.home', compact('listings', 'bookmarkedListings'));
+
+        // Get rental requests for the current user
+        $requestedListings = [];
+        if (Auth::check()) {
+            $requestedListings = Auth::user()->rentalRequests()
+                ->whereIn('requestStatus', ['pending', 'accepted'])
+                ->pluck('listingID')
+                ->toArray();
+        }
+
+        return view('student.home', compact('listings', 'bookmarkedListings', 'requestedListings'));
     }
 
     /**

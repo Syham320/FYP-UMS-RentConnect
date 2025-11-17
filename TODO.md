@@ -1,4 +1,2 @@
-- [x] Modify the "View Details" button in resources/views/landlord/rental-requests.blade.php to open a popup modal
-- [x] Add modal HTML with Tailwind styling to display student profile (name, email, contact info, profile image) and selected rental listing details (title, location, price)
-- [x] Update the button with data attributes for student and listing information
-- [x] Add JavaScript to populate the modal and handle show/hide functionality
+- [x] Modify studentHome method in ListingController.php to include rental request data for each listing
+- [x] Update resources/views/student/home.blade.php to conditionally show "Requested" status instead of "Submit Request" button for listings with pending/accepted requests

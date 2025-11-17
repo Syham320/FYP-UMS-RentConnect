@@ -38,9 +38,7 @@
                         <option value="">All Types</option>
                         <option value="Single Room" {{ ($filters['room_type'] ?? '') == 'Single Room' ? 'selected' : '' }}>Single Room</option>
                         <option value="Shared Room" {{ ($filters['room_type'] ?? '') == 'Shared Room' ? 'selected' : '' }}>Shared Room</option>
-                        <option value="Apartment" {{ ($filters['room_type'] ?? '') == 'Apartment' ? 'selected' : '' }}>Apartment</option>
                         <option value="Studio" {{ ($filters['room_type'] ?? '') == 'Studio' ? 'selected' : '' }}>Studio</option>
-                        <option value="House" {{ ($filters['room_type'] ?? '') == 'House' ? 'selected' : '' }}>House</option>
                     </select>
                 </div>
 

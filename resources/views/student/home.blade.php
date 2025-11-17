@@ -65,9 +65,15 @@
                             </div>
                             <span class="text-sm text-gray-600">{{ $listing->user->userName }}</span>
                         </div>
-                        <button class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors duration-200 submit-request-btn" data-listing-id="{{ $listing->listingID }}">
-                            Submit Request
-                        </button>
+                        @if(in_array($listing->listingID, $requestedListings ?? []))
+                            <button class="bg-gray-500 text-white px-4 py-2 rounded-lg cursor-not-allowed" disabled>
+                                Requested
+                            </button>
+                        @else
+                            <button class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors duration-200 submit-request-btn" data-listing-id="{{ $listing->listingID }}">
+                                Submit Request
+                            </button>
+                        @endif
                     </div>
                 </div>
             </div>
