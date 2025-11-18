@@ -1,2 +1,1 @@
-- [x] Remove hyperlink from listing title in manage-listings.blade.php
-- [x] Add "View Detail" button to Actions column in manage-listings.blade.php
+

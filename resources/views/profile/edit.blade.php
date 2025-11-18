@@ -1,6 +1,6 @@
-@extends(Auth::user()->userRole === 'Student' ? 'layouts.student' : 'layouts.default')
+@extends(Auth::user()->userRole === 'Student' ? 'layouts.student' : (Auth::user()->userRole === 'Admin' ? 'layouts.admin' : (Auth::user()->userRole === 'Landlord' ? 'layouts.landlord' : 'layouts.default')))
 
-@section(Auth::user()->userRole === 'Student' ? 'student-content' : 'content')
+@section(Auth::user()->userRole === 'Student' ? 'student-content' : (Auth::user()->userRole === 'Admin' ? 'admin-content' : (Auth::user()->userRole === 'Landlord' ? 'landlord-content' : 'content')))
 <div class="container mx-auto px-4 py-8">
     <div class="max-w-md mx-auto bg-white p-6 rounded-lg shadow-md relative">
         <!-- Close Button -->

@@ -44,9 +44,12 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('/student/search', [App\Http\Controllers\ListingController::class, 'search'])->name('student.search');
 
-        Route::get('/student/accommodation', function () {
-            return view('student.accommodation');
-        })->name('student.accommodation');
+        Route::get('/student/accommodation', [AccommodationController::class, 'index'])->name('student.accommodation');
+        Route::get('/student/accommodation/create', [AccommodationController::class, 'create'])->name('student.accommodation.create');
+        Route::post('/student/accommodation', [AccommodationController::class, 'store'])->name('student.accommodation.store');
+        Route::get('/student/accommodation/{id}/edit', [AccommodationController::class, 'edit'])->name('student.accommodation.edit');
+        Route::put('/student/accommodation/{id}', [AccommodationController::class, 'update'])->name('student.accommodation.update');
+        Route::delete('/student/accommodation/{id}', [AccommodationController::class, 'destroy'])->name('student.accommodation.destroy');
 
         Route::get('/student/chat', function () {
             return view('student.chat');
@@ -61,6 +64,7 @@ Route::middleware(['auth'])->group(function () {
         })->name('student.complaint');
 
         Route::get('/student/feedback', [FeedbackController::class, 'userFeedback'])->name('student.feedback');
+        Route::get('/student/feedback/{id}', [FeedbackController::class, 'show'])->name('student.feedback.detail');
         Route::get('/student/submit-feedback', function () {
             return view('student.submit-feedback');
         })->name('student.submit-feedback');
@@ -92,6 +96,7 @@ Route::middleware(['auth'])->group(function () {
         })->name('landlord.community');
 
         Route::get('/landlord/feedback', [FeedbackController::class, 'userFeedback'])->name('landlord.feedback');
+        Route::get('/landlord/feedback/{id}', [FeedbackController::class, 'show'])->name('landlord.feedback.detail');
         Route::get('/landlord/submit-feedback', function () {
             return view('landlord.submit-feedback');
         })->name('landlord.submit-feedback');
@@ -127,9 +132,9 @@ Route::middleware(['auth'])->group(function () {
             return view('admin.users', compact('users'));
         })->name('admin.users');
 
-        Route::get('/admin/accommodation', function () {
-            return view('admin.accommodation');
-        })->name('admin.accommodation');
+        Route::get('/admin/accommodation', [AccommodationController::class, 'adminIndex'])->name('admin.accommodation');
+        Route::post('/admin/accommodation/{id}/approve', [AccommodationController::class, 'approve'])->name('admin.accommodation.approve');
+        Route::post('/admin/accommodation/{id}/reject', [AccommodationController::class, 'reject'])->name('admin.accommodation.reject');
 
         Route::get('/admin/feedback', [FeedbackController::class, 'index'])->name('admin.feedback');
         Route::get('/admin/feedback/{id}', [FeedbackController::class, 'show'])->name('admin.feedback.show');

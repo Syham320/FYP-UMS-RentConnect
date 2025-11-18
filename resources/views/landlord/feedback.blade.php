@@ -41,7 +41,7 @@
                         </div>
                         <p class="text-sm text-gray-600">Type: {{ $feedback->feedbackType }} | Priority: {{ $feedback->priority }}</p>
                         <p class="text-sm text-gray-700 mt-2">{{ Str::limit($feedback->feedbackText, 100) }}</p>
-                        <button class="mt-2 text-green-600 hover:text-green-800 text-sm font-medium" onclick="openFeedbackModal({{ $feedback->feedbackID }})">View Details</button>
+                        <a href="{{ route('landlord.feedback.detail', $feedback->feedbackID) }}" class="mt-2 text-green-600 hover:text-green-800 text-sm font-medium">View Details</a>
                     </div>
                 @endforeach
             </div>
