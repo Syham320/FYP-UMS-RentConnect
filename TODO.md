@@ -1,1 +1,3 @@
-
+- Fix invalid date display in student rental requests view and modal
+  - Update blade template to handle null requestDate
+  - Update JavaScript in modal to handle null requestDate

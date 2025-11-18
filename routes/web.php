@@ -8,6 +8,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ListingController;
 use App\Http\Controllers\RentalRequestController;
 use App\Http\Controllers\FeedbackController;
+use App\Http\Controllers\AccommodationController;
 
 // Landing page
 Route::get('/', function () {

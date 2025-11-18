@@ -37,7 +37,7 @@
                     </div>
                     <div class="flex justify-between items-center">
                         <div class="text-sm text-gray-500">
-                            <p>Submitted on: {{ $request->requestDate->format('F j, Y \a\t g:i A') }}</p>
+                            <p>Submitted on: {{ $request->requestDate ? $request->requestDate->format('F j, Y \a\t g:i A') : 'Date not available' }}</p>
                             <p>Landlord: {{ $request->listing->user->userName }}
                                 @if($request->requestStatus == 'pending') - Awaiting approval
                                 @elseif($request->requestStatus == 'accepted') - Request accepted
@@ -243,21 +243,16 @@ function showListingDetails(listingId) {
                                 ${request.requestStatus.charAt(0).toUpperCase() + request.requestStatus.slice(1)}
                             </span>
                             <span class="text-sm text-gray-600">
-                                Submitted on ${new Date(request.requestDate.date).toLocaleDateString('en-US', {
+                                Submitted on ${request.requestDate && request.requestDate.date ? new Date(request.requestDate.date).toLocaleDateString('en-US', {
                                     year: 'numeric',
                                     month: 'long',
                                     day: 'numeric',
                                     hour: '2-digit',
                                     minute: '2-digit'
-                                })}
+                                }) : 'Date not available'}
                             </span>
                         </div>
-                        ${request.requestStatus === 'declined' ? `
-                            <div class="mt-3 p-3 bg-red-50 border border-red-200 rounded-md">
-                                <h6 class="font-medium text-red-800 mb-1">Reason for Decline</h6>
-                                <p class="text-sm text-red-700">The property is not available anymore</p>
-                            </div>
-                        ` : ''}
+
                     </div>
                 </div>
             </div>
