@@ -19,6 +19,9 @@
                         <div>
                             <h3 class="text-lg font-medium text-gray-900">{{ $accommodation->fullName }}</h3>
                             <p class="text-sm text-gray-600">Submitted on: {{ $accommodation->submittedDate->format('F d, Y') }}</p>
+                            @if($accommodation->status == 'approved')
+                                <p class="text-green-600 font-semibold mt-2">You are officially a Non-Residential Student!</p>
+                            @endif
                         </div>
                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
                             @if($accommodation->status == 'approved') bg-green-100 text-green-800

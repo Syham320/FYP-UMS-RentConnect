@@ -22,12 +22,6 @@
                 <div class="ml-6">
                     <h1 class="profile-name">{{ Auth::user()->userName }}</h1>
                     <p class="profile-role">{{ Auth::user()->role }}</p>
-                    @if(App\Models\AccommodationForm::where('studentID', Auth::id())->where('status', 'approved')->exists())
-                        <div class="non-residential-badge">
-                            <i class="fas fa-home"></i>
-                            Non-Residential Student
-                        </div>
-                    @endif
                 </div>
             </div>
         </div>

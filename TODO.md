@@ -1,3 +1,5 @@
-- [ ] Update RentalRequestController.php: Remove 'rented' from validation in updateStatus method and remove the logic that sets listing availabilityStatus to 'rented' when accepted.
-- [ ] Update ListingController.php: Update comments in bookmarks method to remove reference to 'rented' status.
-- [ ] Test the rental request update flow to ensure accepted requests do not change listing status and listings with accepted requests are excluded from student views.
+# TODO: Implement Automatic Decline of Pending Rental Requests
+
+## Steps to Complete
+- [x] Modify the `updateStatus` method in `RentalRequestController.php` to automatically decline other pending requests for the same listing when a request is accepted.
+- [ ] Test the functionality to ensure it works correctly.

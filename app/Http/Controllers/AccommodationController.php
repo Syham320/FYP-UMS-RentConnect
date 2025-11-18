@@ -30,12 +30,14 @@ class AccommodationController extends Controller
     {
         $request->validate([
             'fullName' => 'required|string|max:255',
-            'matricNumber' => 'required|string|max:255',
+            'matricNumber' => 'required|string|max:255|unique:accommodation_forms,matricNumber',
             'address' => 'required|string|max:255',
             'landlordName' => 'required|string|max:255',
             'rentalType' => 'required|in:Single Room,Shared Room,Studio',
             'rentalAgreement' => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048',
             'paymentProof' => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048',
+        ], [
+            'matricNumber.unique' => 'You have already registered accommodations with this matric number.',
         ]);
 
         $data = $request->only(['fullName', 'matricNumber', 'address', 'landlordName', 'rentalType']);
@@ -66,12 +68,14 @@ class AccommodationController extends Controller
 
         $request->validate([
             'fullName' => 'required|string|max:255',
-            'matricNumber' => 'required|string|max:255',
+            'matricNumber' => 'required|string|max:255|unique:accommodation_forms,matricNumber,' . $accommodation->registrationID . ',registrationID',
             'address' => 'required|string|max:255',
             'landlordName' => 'required|string|max:255',
             'rentalType' => 'required|in:Single Room,Shared Room,Studio',
             'rentalAgreement' => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048',
             'paymentProof' => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048',
+        ], [
+            'matricNumber.unique' => 'You have already registered accommodations with this matric number.',
         ]);
 
         $data = $request->only(['fullName', 'matricNumber', 'address', 'landlordName', 'rentalType']);

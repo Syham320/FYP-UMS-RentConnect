@@ -106,6 +106,14 @@ class RentalRequestController extends Controller
 
         $rentalRequest->update($updateData);
 
+        // If the request is accepted, automatically decline all other pending requests for the same listing
+        if ($status === 'accepted') {
+            RentalRequest::where('listingID', $rentalRequest->listingID)
+                ->where('requestID', '!=', $requestID)
+                ->where('requestStatus', 'pending')
+                ->update(['requestStatus' => 'declined']);
+        }
+
         // Here you could send notification to student
         // Notification::send($rentalRequest->student, new RentalRequestStatusNotification($rentalRequest));
 
