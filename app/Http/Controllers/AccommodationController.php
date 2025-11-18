@@ -20,9 +20,17 @@ class AccommodationController extends Controller
         return view('student.accommodation-form');
     }
 
+    public function show($id)
+    {
+        $accommodation = AccommodationForm::where('registrationID', $id)->where('studentID', Auth::id())->firstOrFail();
+        return view('student.accommodation-detail', compact('accommodation'));
+    }
+
     public function store(Request $request)
     {
         $request->validate([
+            'fullName' => 'required|string|max:255',
+            'matricNumber' => 'required|string|max:255',
             'address' => 'required|string|max:255',
             'landlordName' => 'required|string|max:255',
             'rentalType' => 'required|in:Single Room,Shared Room,Studio',
@@ -30,7 +38,7 @@ class AccommodationController extends Controller
             'paymentProof' => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048',
         ]);
 
-        $data = $request->only(['address', 'landlordName', 'rentalType']);
+        $data = $request->only(['fullName', 'matricNumber', 'address', 'landlordName', 'rentalType']);
         $data['studentID'] = Auth::id();
 
         if ($request->hasFile('rentalAgreement')) {
@@ -57,6 +65,8 @@ class AccommodationController extends Controller
         $accommodation = AccommodationForm::where('registrationID', $id)->where('studentID', Auth::id())->firstOrFail();
 
         $request->validate([
+            'fullName' => 'required|string|max:255',
+            'matricNumber' => 'required|string|max:255',
             'address' => 'required|string|max:255',
             'landlordName' => 'required|string|max:255',
             'rentalType' => 'required|in:Single Room,Shared Room,Studio',
@@ -64,7 +74,7 @@ class AccommodationController extends Controller
             'paymentProof' => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048',
         ]);
 
-        $data = $request->only(['address', 'landlordName', 'rentalType']);
+        $data = $request->only(['fullName', 'matricNumber', 'address', 'landlordName', 'rentalType']);
 
         if ($request->hasFile('rentalAgreement')) {
             if ($accommodation->rentalAgreement) {
@@ -126,5 +136,11 @@ class AccommodationController extends Controller
         // TODO: Notify student of rejection
 
         return redirect()->route('admin.accommodation')->with('success', 'Accommodation registration rejected.');
+    }
+
+    public function adminShow($id)
+    {
+        $accommodation = AccommodationForm::with('student')->findOrFail($id);
+        return view('admin.accommodation-detail', compact('accommodation'));
     }
 }

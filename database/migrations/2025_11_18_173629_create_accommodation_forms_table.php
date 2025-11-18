@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('accommodation_forms', function (Blueprint $table) {
             $table->id('registrationID');
+            $table->string('fullName', 255);
+            $table->string('matricNumber', 255);
             $table->string('address', 255);
             $table->string('landlordName', 255);
             $table->enum('rentalType', ['Single Room', 'Shared Room', 'Studio']);

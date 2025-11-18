@@ -45,8 +45,8 @@ class FeedbackController extends Controller
     {
         $feedback = Feedback::with('user')->findOrFail($id);
 
-        // Ensure user can only view their own feedback
-        if ($feedback->userID !== Auth::id()) {
+        // Allow admin to view any feedback, others can only view their own
+        if (Auth::user()->userRole !== 'Admin' && $feedback->userID !== Auth::id()) {
             abort(403, 'Unauthorized');
         }
 
@@ -56,7 +56,7 @@ class FeedbackController extends Controller
             return view('landlord.feedback-detail', compact('feedback'));
         }
 
-        // Admin fallback
+        // Admin view
         return view('admin.feedback-detail', compact('feedback'));
     }
 

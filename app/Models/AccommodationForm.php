@@ -14,6 +14,8 @@ class AccommodationForm extends Model
     protected $primaryKey = 'registrationID';
 
     protected $fillable = [
+        'fullName',
+        'matricNumber',
         'address',
         'landlordName',
         'rentalType',

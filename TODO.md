@@ -1,3 +1,3 @@
-- Fix invalid date display in student rental requests view and modal
-  - Update blade template to handle null requestDate
-  - Update JavaScript in modal to handle null requestDate
+- [ ] Update RentalRequestController.php: Remove 'rented' from validation in updateStatus method and remove the logic that sets listing availabilityStatus to 'rented' when accepted.
+- [ ] Update ListingController.php: Update comments in bookmarks method to remove reference to 'rented' status.
+- [ ] Test the rental request update flow to ensure accepted requests do not change listing status and listings with accepted requests are excluded from student views.

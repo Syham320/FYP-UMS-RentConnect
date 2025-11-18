@@ -59,6 +59,36 @@
     letter-spacing: 1px;
 }
 
+.non-residential-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 25px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    margin-top: 0.5rem;
+    animation: badgeGlow 2s ease-in-out infinite alternate;
+}
+
+.non-residential-badge i {
+    font-size: 1rem;
+}
+
+@keyframes badgeGlow {
+    from {
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    }
+    to {
+        box-shadow: 0 4px 20px rgba(102, 126, 234, 0.6), 0 0 30px rgba(102, 126, 234, 0.3);
+    }
+}
+
 .profile-stats {
     display: flex;
     justify-content: center;

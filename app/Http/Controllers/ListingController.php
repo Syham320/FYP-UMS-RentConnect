@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Listing;
 use App\Models\Bookmark;
+use App\Models\RentalRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
@@ -143,6 +144,8 @@ class ListingController extends Controller
         return redirect()->route('landlord.my-listings')->with('success', 'Listing updated successfully!');
     }
 
+
+
     public function manageListings()
     {
         $listings = Listing::whereIn('availabilityStatus', ['pending', 'approved', 'rejected'])
@@ -178,7 +181,14 @@ class ListingController extends Controller
 
     public function studentHome()
     {
+        // Get listing IDs where any rental request has been accepted
+        $acceptedListingIds = RentalRequest::where('requestStatus', 'accepted')
+            ->pluck('listingID')
+            ->unique()
+            ->toArray();
+
         $listings = Listing::where('availabilityStatus', 'approved')
+            ->whereNotIn('listingID', $acceptedListingIds)
             ->with('user')
             ->orderBy('createdDate', 'desc')
             ->get();
@@ -211,9 +221,17 @@ class ListingController extends Controller
             ->orderBy('bookmarkedDate', 'desc')
             ->get();
 
+        // Get listing IDs where any rental request has been accepted
+        $acceptedListingIds = RentalRequest::where('requestStatus', 'accepted')
+            ->pluck('listingID')
+            ->unique()
+            ->toArray();
+
         // Filter out bookmarks where listing might be deleted or not approved
-        $bookmarkedListings = $bookmarks->filter(function($bookmark) {
-            return $bookmark->listing && $bookmark->listing->availabilityStatus === 'approved';
+        $bookmarkedListings = $bookmarks->filter(function($bookmark) use ($acceptedListingIds) {
+            return $bookmark->listing &&
+                   $bookmark->listing->availabilityStatus === 'approved' &&
+                   !in_array($bookmark->listing->listingID, $acceptedListingIds);
         })->map(function($bookmark) {
             return $bookmark->listing;
         });
@@ -276,7 +294,15 @@ class ListingController extends Controller
      */
     public function search(Request $request)
     {
-        $query = Listing::where('availabilityStatus', 'approved')->with('user');
+        // Get listing IDs where any rental request has been accepted
+        $acceptedListingIds = RentalRequest::where('requestStatus', 'accepted')
+            ->pluck('listingID')
+            ->unique()
+            ->toArray();
+
+        $query = Listing::where('availabilityStatus', 'approved')
+            ->whereNotIn('listingID', $acceptedListingIds)
+            ->with('user');
 
         // Keyword search (search in title, description, and location)
         if ($request->filled('query')) {

@@ -16,7 +16,7 @@
         <div class="mb-4 text-center text-green-700">{{ session('success') }}</div>
     @endif
 
-    <p class="text-gray-600 text-center mb-6">This page displays your listings that have been approved.</p>
+    <p class="text-gray-600 text-center mb-6">This page displays your listings that have been approved and pending approval by an administrator.</p>
 
     @if(isset($listings) && $listings->count())
         <div class="listings-grid">

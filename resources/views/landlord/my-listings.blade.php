@@ -49,6 +49,7 @@
                                     <a href="{{ route('landlord.edit-listing', $listing->listingID) }}" class="inline-flex items-center px-3 py-1 text-sm font-medium text-blue-600 bg-blue-50 rounded-md hover:bg-blue-100 transition-colors duration-200">
                                         <i class="fas fa-edit mr-1"></i> Edit
                                     </a>
+
                                 </div>
                             </div>
                             <div class="mt-3 text-xs text-gray-500">

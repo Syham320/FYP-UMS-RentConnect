@@ -27,6 +27,18 @@
             @csrf
 
             <div class="mb-6">
+                <label for="fullName" class="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
+                <input type="text" id="fullName" name="fullName" value="{{ old('fullName', $accommodation->fullName ?? '') }}" required
+                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+
+            <div class="mb-6">
+                <label for="matricNumber" class="block text-sm font-medium text-gray-700 mb-2">Matric Number</label>
+                <input type="text" id="matricNumber" name="matricNumber" value="{{ old('matricNumber', $accommodation->matricNumber ?? '') }}" required
+                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+
+            <div class="mb-6">
                 <label for="address" class="block text-sm font-medium text-gray-700 mb-2">Address</label>
                 <input type="text" id="address" name="address" value="{{ old('address', $accommodation->address ?? '') }}" required
                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
@@ -50,7 +62,7 @@
             </div>
 
             <div class="mb-6">
-                <label for="rentalAgreement" class="block text-sm font-medium text-gray-700 mb-2">Rental Agreement (PDF, DOC, DOCX, JPG, JPEG, PNG - Max 2MB)</label>
+                <label for="rentalAgreement" class="block text-sm font-medium text-gray-700 mb-2">Rental Agreement (Max 2MB)</label>
                 <input type="file" id="rentalAgreement" name="rentalAgreement" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                 @isset($accommodation)
@@ -61,7 +73,7 @@
             </div>
 
             <div class="mb-8">
-                <label for="paymentProof" class="block text-sm font-medium text-gray-700 mb-2">Payment Proof (PDF, DOC, DOCX, JPG, JPEG, PNG - Max 2MB)</label>
+                <label for="paymentProof" class="block text-sm font-medium text-gray-700 mb-2">Payment Proof (Max 2MB)</label>
                 <input type="file" id="paymentProof" name="paymentProof" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                 @isset($accommodation)

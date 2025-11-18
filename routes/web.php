@@ -45,9 +45,14 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('/student/search', [App\Http\Controllers\ListingController::class, 'search'])->name('student.search');
 
+        Route::get('/student/profile', function () {
+            return view('student.profile');
+        })->name('student.profile');
+
         Route::get('/student/accommodation', [AccommodationController::class, 'index'])->name('student.accommodation');
         Route::get('/student/accommodation/create', [AccommodationController::class, 'create'])->name('student.accommodation.create');
         Route::post('/student/accommodation', [AccommodationController::class, 'store'])->name('student.accommodation.store');
+        Route::get('/student/accommodation/{id}', [AccommodationController::class, 'show'])->name('student.accommodation.show');
         Route::get('/student/accommodation/{id}/edit', [AccommodationController::class, 'edit'])->name('student.accommodation.edit');
         Route::put('/student/accommodation/{id}', [AccommodationController::class, 'update'])->name('student.accommodation.update');
         Route::delete('/student/accommodation/{id}', [AccommodationController::class, 'destroy'])->name('student.accommodation.destroy');
@@ -84,6 +89,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/landlord/my-listings', [ListingController::class, 'myListings'])->name('landlord.my-listings');
 
         Route::get('/landlord/rental-requests', [RentalRequestController::class, 'landlordRequests'])->name('landlord.rental-requests');
+        Route::get('/landlord/rental-requests/{requestID}/status', [RentalRequestController::class, 'getStatus'])->name('landlord.rental-requests.get-status');
         Route::post('/landlord/rental-requests/{requestID}/status', [RentalRequestController::class, 'updateStatus'])->name('landlord.rental-requests.update-status');
 
         Route::get('/landlord/approved-listings', [ListingController::class, 'approvedListings'])->name('landlord.approved-listings');
@@ -112,6 +118,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/landlord/edit-listing/{id}', [App\Http\Controllers\ListingController::class, 'edit'])->name('landlord.edit-listing');
         Route::put('/landlord/update-listing/{id}', [App\Http\Controllers\ListingController::class, 'update'])->name('landlord.update-listing');
 
+
     });
 
     Route::middleware('role:Admin')->group(function () {
@@ -134,6 +141,7 @@ Route::middleware(['auth'])->group(function () {
         })->name('admin.users');
 
         Route::get('/admin/accommodation', [AccommodationController::class, 'adminIndex'])->name('admin.accommodation');
+        Route::get('/admin/accommodation/{id}', [AccommodationController::class, 'adminShow'])->name('admin.accommodation.show');
         Route::post('/admin/accommodation/{id}/approve', [AccommodationController::class, 'approve'])->name('admin.accommodation.approve');
         Route::post('/admin/accommodation/{id}/reject', [AccommodationController::class, 'reject'])->name('admin.accommodation.reject');
 

@@ -3,6 +3,7 @@
 @section('head')
 @parent
 <link rel="stylesheet" href="{{ asset('css/student/profile.css') }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 @endsection
 
 @section('student-content')
@@ -21,6 +22,12 @@
                 <div class="ml-6">
                     <h1 class="profile-name">{{ Auth::user()->userName }}</h1>
                     <p class="profile-role">{{ Auth::user()->role }}</p>
+                    @if(App\Models\AccommodationForm::where('studentID', Auth::id())->where('status', 'approved')->exists())
+                        <div class="non-residential-badge">
+                            <i class="fas fa-home"></i>
+                            Non-Residential Student
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>

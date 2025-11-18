@@ -231,30 +231,6 @@ function showListingDetails(listingId) {
                     <h4 class="font-semibold text-gray-800 mb-2">Description</h4>
                     <p class="text-gray-700 leading-relaxed">${listing.listingDescription}</p>
                 </div>
-
-                <div class="border-t pt-4">
-                        <div class="bg-gray-100 rounded-lg p-4">
-                        <h5 class="font-semibold text-gray-800 mb-2">Request Status</h5>
-                        <div class="flex items-center">
-                            <span class="inline-block px-3 py-1 text-sm font-semibold rounded-full mr-3
-                                ${request.requestStatus == 'pending' ? 'text-yellow-800 bg-yellow-100' :
-                                  request.requestStatus == 'accepted' ? 'text-green-800 bg-green-100' :
-                                  'text-red-800 bg-red-100'}">
-                                ${request.requestStatus.charAt(0).toUpperCase() + request.requestStatus.slice(1)}
-                            </span>
-                            <span class="text-sm text-gray-600">
-                                Submitted on ${request.requestDate && request.requestDate.date ? new Date(request.requestDate.date).toLocaleDateString('en-US', {
-                                    year: 'numeric',
-                                    month: 'long',
-                                    day: 'numeric',
-                                    hour: '2-digit',
-                                    minute: '2-digit'
-                                }) : 'Date not available'}
-                            </span>
-                        </div>
-
-                    </div>
-                </div>
             </div>
         </div>
     `;

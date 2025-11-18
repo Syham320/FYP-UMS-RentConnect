@@ -70,12 +70,27 @@ class RentalRequestController extends Controller
         return view('landlord.rental-requests', compact('requests'));
     }
 
+    public function getStatus($requestID)
+    {
+        $rentalRequest = RentalRequest::with(['listing', 'student'])
+            ->where('requestID', $requestID)
+            ->whereHas('listing', function($query) {
+                $query->where('user_id', Auth::id());
+            })
+            ->firstOrFail();
+
+        return response()->json([
+            'success' => true,
+            'request' => $rentalRequest
+        ]);
+    }
+
     public function updateStatus(Request $request, $requestID)
     {
         $status = $request->input('status');
 
         $request->validate([
-            'status' => 'required|in:accepted,declined',
+            'status' => 'required|in:accepted,declined,rented',
         ]);
 
         $rentalRequest = RentalRequest::with(['listing', 'student'])
