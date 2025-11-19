@@ -53,7 +53,7 @@
                 <a href="{{ route('admin.feedback') }}" class="block px-4 py-2 text-gray-700 hover:bg-red-100 rounded-lg {{ request()->routeIs('admin.feedback') ? 'bg-red-200' : '' }}">
                     <i class="fas fa-comments mr-2"></i>Manage Feedback
                 </a>
-                <a href="{{ route('admin.faqs') }}" class="block px-4 py-2 text-gray-700 hover:bg-red-100 rounded-lg {{ request()->routeIs('admin.faqs') ? 'bg-red-200' : '' }}">
+                <a href="{{ route('admin.faqs.index') }}" class="block px-4 py-2 text-gray-700 hover:bg-red-100 rounded-lg {{ request()->routeIs('admin.faqs.index') ? 'bg-red-200' : '' }}">
                     <i class="fas fa-question-circle mr-2"></i>Manage FAQs
                 </a>
             </nav>

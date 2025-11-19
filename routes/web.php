@@ -9,6 +9,7 @@ use App\Http\Controllers\ListingController;
 use App\Http\Controllers\RentalRequestController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\AccommodationController;
+use App\Http\Controllers\FaqController;
 
 // Landing page
 Route::get('/', function () {
@@ -77,7 +78,8 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/student/feedback', [FeedbackController::class, 'store'])->name('student.feedback.store');
 
         Route::get('/student/faqs', function () {
-            return view('student.faqs');
+            $faqs = \App\Models\Faq::where('user_role', 'Student')->where('is_active', true)->get()->groupBy('category');
+            return view('student.faqs', compact('faqs'));
         })->name('student.faqs');
     });
 
@@ -110,7 +112,8 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/landlord/feedback', [FeedbackController::class, 'store'])->name('landlord.feedback.store');
 
         Route::get('/landlord/faqs', function () {
-            return view('landlord.faqs');
+            $faqs = \App\Models\Faq::where('user_role', 'Landlord')->where('is_active', true)->get()->groupBy('category');
+            return view('landlord.faqs', compact('faqs'));
         })->name('landlord.faqs');
 
         Route::get('/landlord/create-listing', [App\Http\Controllers\ListingController::class, 'create'])->name('landlord.create-listing');
@@ -149,8 +152,12 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/admin/feedback/{id}', [FeedbackController::class, 'show'])->name('admin.feedback.show');
         Route::post('/admin/feedback/{id}/status', [FeedbackController::class, 'updateStatus'])->name('admin.feedback.update-status');
 
-        Route::get('/admin/faqs', function () {
-            return view('admin.faqs');
-        })->name('admin.faqs');
+        Route::get('/admin/faqs', [FaqController::class, 'index'])->name('admin.faqs.index');
+        Route::get('/admin/faqs/create', [FaqController::class, 'create'])->name('admin.faqs.create');
+        Route::post('/admin/faqs', [FaqController::class, 'store'])->name('admin.faqs.store');
+        Route::get('/admin/faqs/{faq}/edit', [FaqController::class, 'edit'])->name('admin.faqs.edit');
+        Route::put('/admin/faqs/{faq}', [FaqController::class, 'update'])->name('admin.faqs.update');
+        Route::delete('/admin/faqs/{faq}', [FaqController::class, 'destroy'])->name('admin.faqs.destroy');
+        Route::post('/admin/faqs/{faq}/toggle', [FaqController::class, 'toggle'])->name('admin.faqs.toggle');
     });
 });

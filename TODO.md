@@ -1,5 +1,11 @@
-# TODO: Implement Automatic Decline of Pending Rental Requests
+# TODO: Remove Search Button from FAQ Pages
 
-## Steps to Complete
-- [x] Modify the `updateStatus` method in `RentalRequestController.php` to automatically decline other pending requests for the same listing when a request is accepted.
-- [ ] Test the functionality to ensure it works correctly.
+- [x] Remove search section from resources/views/student/faqs.blade.php
+- [x] Remove search JavaScript from resources/views/student/faqs.blade.php
+- [x] Remove search section from resources/views/landlord/faqs.blade.php
+- [x] Remove search JavaScript from resources/views/landlord/faqs.blade.php
+
+# TODO: Update FAQ Layout to Two-Column Grid
+
+- [ ] Add responsive two-column grid to resources/views/student/faqs.blade.php
+- [ ] Add responsive two-column grid to resources/views/landlord/faqs.blade.php
