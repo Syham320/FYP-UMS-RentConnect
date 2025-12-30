@@ -48,9 +48,16 @@
                                 <p class="text-red-600 text-sm mt-1"><strong>Reason:</strong> The property is not available anymore</p>
                             @endif
                         </div>
-                        <button class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded view-details-btn" data-request-id="{{ $request->requestID }}" data-listing-id="{{ $request->listing->listingID }}">
-                            View Details
-                        </button>
+                        <div class="flex space-x-2">
+                            <button class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded view-details-btn" data-request-id="{{ $request->requestID }}" data-listing-id="{{ $request->listing->listingID }}">
+                                View Details
+                            </button>
+                            @if($request->requestStatus == 'accepted')
+                                <a href="{{ route('student.accommodation.create', ['rental_request_id' => $request->requestID]) }}" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded inline-block">
+                                    Submit Accommodation
+                                </a>
+                            @endif
+                        </div>
                     </div>
                 </div>
             @endforeach

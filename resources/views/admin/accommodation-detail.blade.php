@@ -127,6 +127,21 @@
                         </form>
                     </div>
                 </div>
+                @elseif($accommodation->status === 'approved')
+                <div class="border-t border-gray-200 pt-6 mt-6">
+                    <div class="flex justify-end space-x-2">
+                        @if(!$accommodation->admin_allowed_new)
+                        <form method="POST" action="{{ route('admin.accommodation.allow-new', $accommodation->registrationID) }}" class="inline">
+                            @csrf
+                            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition duration-200">
+                                <i class="fas fa-plus mr-2"></i>Allow New Registration
+                            </button>
+                        </form>
+                        @else
+                        <span class="text-green-600 font-medium">New registration allowed for next semester</span>
+                        @endif
+                    </div>
+                </div>
                 @endif
             </div>
         </div>

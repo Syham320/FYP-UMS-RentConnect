@@ -24,6 +24,7 @@ class AccommodationForm extends Model
         'status',
         'submittedDate',
         'studentID',
+        'rentalRequestID',
     ];
 
     protected $casts = [

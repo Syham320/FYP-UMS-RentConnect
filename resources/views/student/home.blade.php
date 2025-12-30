@@ -215,6 +215,24 @@ document.addEventListener('DOMContentLoaded', function() {
             const listingId = this.dataset.listingId;
             const button = this;
 
+            // Check if this is a resubmission (has rejected request for this listing)
+            const card = button.closest('.listing-card');
+            const hasRejectedRequest = card ? card.querySelector('.rejected-request-indicator') : null;
+
+            if (hasRejectedRequest) {
+                // Show confirmation dialog for resubmission
+                const confirmSubmit = confirm('You have previously submitted a request for this listing that was declined. Do you want to submit a new request?');
+                if (!confirmSubmit) {
+                    return;
+                }
+            } else {
+                // Show confirmation dialog for new submission
+                const confirmSubmit = confirm('Are you sure you want to submit a rental request for this listing?');
+                if (!confirmSubmit) {
+                    return;
+                }
+            }
+
             // Disable button during request
             button.disabled = true;
             button.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Submitting...';

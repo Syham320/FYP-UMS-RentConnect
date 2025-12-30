@@ -1,11 +1,3 @@
-# TODO: Remove Search Button from FAQ Pages
-
-- [x] Remove search section from resources/views/student/faqs.blade.php
-- [x] Remove search JavaScript from resources/views/student/faqs.blade.php
-- [x] Remove search section from resources/views/landlord/faqs.blade.php
-- [x] Remove search JavaScript from resources/views/landlord/faqs.blade.php
-
-# TODO: Update FAQ Layout to Two-Column Grid
-
-- [ ] Add responsive two-column grid to resources/views/student/faqs.blade.php
-- [ ] Add responsive two-column grid to resources/views/landlord/faqs.blade.php
+- [x] Update RentalRequestController.php store method to enforce one active rental request per listing
+- [x] Allow resubmission for the same listing after rejection
+- [x] Add confirmation dialog for rental request submission with different messages for new vs resubmission

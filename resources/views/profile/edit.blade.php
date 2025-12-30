@@ -49,6 +49,12 @@
                 <label for="contactInfo" class="block text-gray-700">Contact Info</label>
                 <input type="text" id="contactInfo" name="contactInfo" value="{{ old('contactInfo', $user->contactInfo) }}" class="w-full px-3 py-2 border rounded-lg">
             </div>
+            @if($user->userRole === 'Student')
+            <div class="mb-4">
+                <label for="matricNumber" class="block text-gray-700">Matric Number</label>
+                <input type="text" id="matricNumber" name="matricNumber" value="{{ old('matricNumber', $user->matricNumber) }}" class="w-full px-3 py-2 border rounded-lg">
+            </div>
+            @endif
             <div class="mb-4">
                 <label for="profileImg" class="block text-gray-700">Change Profile Image</label>
                 <input type="file" id="profileImg" name="profileImg" class="w-full px-3 py-2 border rounded-lg" accept="image/*">

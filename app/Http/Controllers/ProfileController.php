@@ -22,6 +22,7 @@ class ProfileController extends Controller
             'userName' => 'required|string|max:255',
             'userEmail' => 'required|string|email|max:255|unique:users,userEmail,' . $user->id,
             'contactInfo' => 'nullable|string|max:50',
+            'matricNumber' => 'nullable|string|max:20|unique:users,matricNumber,' . $user->id,
             'profileImg' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
@@ -37,6 +38,7 @@ class ProfileController extends Controller
             'userName' => $request->userName,
             'userEmail' => $request->userEmail,
             'contactInfo' => $request->contactInfo,
+            'matricNumber' => $request->matricNumber,
             'profileImg' => $profileImgPath,
         ]);
 

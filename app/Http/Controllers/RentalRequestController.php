@@ -12,40 +12,47 @@ class RentalRequestController extends Controller
 {
     public function store(Request $request)
     {
-        $request->validate([
-            'listingID' => 'required|exists:listings,listingID',
-        ]);
+        try {
+            $request->validate([
+                'listingID' => 'required|exists:listings,listingID',
+            ]);
 
-        $listing = Listing::findOrFail($request->listingID);
+            $listing = Listing::findOrFail($request->listingID);
 
-        // Check if student already has a pending/accepted request for this listing
-        $existingRequest = RentalRequest::where('listingID', $request->listingID)
-            ->where('studentID', Auth::id())
-            ->whereIn('requestStatus', ['pending', 'accepted'])
-            ->first();
+            // Check if student already has any pending request
+            $existingRequest = RentalRequest::where('studentID', Auth::id())
+                ->where('requestStatus', 'pending')
+                ->first();
 
-        if ($existingRequest) {
+            if ($existingRequest) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'You already have a pending rental request. Please wait for it to be resolved before submitting a new one.'
+                ]);
+            }
+
+            // Create the rental request
+            $rentalRequest = RentalRequest::create([
+                'listingID' => $request->listingID,
+                'studentID' => Auth::id(),
+                'requestStatus' => 'pending',
+            ]);
+
+            // Here you could send notification to landlord
+            // Notification::send($listing->user, new RentalRequestNotification($rentalRequest));
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Rental request submitted successfully!',
+                'request' => $rentalRequest
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Rental request submission error: ' . $e->getMessage());
             return response()->json([
                 'success' => false,
-                'message' => 'You already have a pending or accepted request for this listing.'
-            ]);
+                'message' => 'An error occurred while submitting the rental request. Please try again.'
+            ], 500);
         }
-
-        // Create the rental request
-        $rentalRequest = RentalRequest::create([
-            'listingID' => $request->listingID,
-            'studentID' => Auth::id(),
-            'requestStatus' => 'pending',
-        ]);
-
-        // Here you could send notification to landlord
-        // Notification::send($listing->user, new RentalRequestNotification($rentalRequest));
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Rental request submitted successfully!',
-            'request' => $rentalRequest
-        ]);
     }
 
     public function studentRequests()

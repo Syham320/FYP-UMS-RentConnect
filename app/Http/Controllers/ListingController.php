@@ -58,9 +58,9 @@ class ListingController extends Controller
      */
     public function approvedListings()
     {
-        // Show both approved and pending listings for the landlord so pending items are visible with a 'Pending' badge
+        // Show approved, pending, and rejected listings for the landlord so all statuses are visible with appropriate badges
         $listings = Listing::where('user_id', Auth::id())
-            ->whereIn('availabilityStatus', ['approved', 'pending'])
+            ->whereIn('availabilityStatus', ['approved', 'pending', 'rejected'])
             ->orderBy('createdDate', 'desc')
             ->get();
 

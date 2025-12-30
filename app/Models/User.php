@@ -23,6 +23,7 @@ class User extends Authenticatable
         'password',
         'userRole',
         'contactInfo',
+        'matricNumber',
         'profileImg',
     ];
 

@@ -147,6 +147,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/admin/accommodation/{id}', [AccommodationController::class, 'adminShow'])->name('admin.accommodation.show');
         Route::post('/admin/accommodation/{id}/approve', [AccommodationController::class, 'approve'])->name('admin.accommodation.approve');
         Route::post('/admin/accommodation/{id}/reject', [AccommodationController::class, 'reject'])->name('admin.accommodation.reject');
+        Route::post('/admin/accommodation/{id}/allow-new', [AccommodationController::class, 'allowNew'])->name('admin.accommodation.allow-new');
 
         Route::get('/admin/feedback', [FeedbackController::class, 'index'])->name('admin.feedback');
         Route::get('/admin/feedback/{id}', [FeedbackController::class, 'show'])->name('admin.feedback.show');

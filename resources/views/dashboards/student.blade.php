@@ -3,6 +3,7 @@
 @section('head')
 @parent
 <link rel="stylesheet" href="{{ asset('css/student/profile.css') }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 @endsection
 
 @section('student-content')
@@ -44,7 +45,10 @@
                         <div class="detail-label">Phone Number</div>
                         <div class="detail-value">{{ Auth::user()->contactInfo ?: 'Not provided' }}</div>
                     </div>
-
+                    <div>
+                        <div class="detail-label">Matric Number</div>
+                        <div class="detail-value">{{ Auth::user()->matricNumber ?: 'Not provided' }}</div>
+                    </div>
                 </div>
             </div>
 

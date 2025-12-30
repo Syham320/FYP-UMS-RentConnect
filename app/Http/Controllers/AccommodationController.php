@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\AccommodationForm;
+use App\Models\RentalRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
@@ -15,9 +16,17 @@ class AccommodationController extends Controller
         return view('student.accommodation', compact('accommodations'));
     }
 
-    public function create()
+    public function create(Request $request)
     {
-        return view('student.accommodation-form');
+        $rentalRequest = null;
+        if ($request->has('rental_request_id')) {
+            $rentalRequest = RentalRequest::with(['listing.user'])
+                ->where('requestID', $request->rental_request_id)
+                ->where('studentID', Auth::id())
+                ->where('requestStatus', 'accepted')
+                ->firstOrFail();
+        }
+        return view('student.accommodation-form', compact('rentalRequest'));
     }
 
     public function show($id)
@@ -28,19 +37,37 @@ class AccommodationController extends Controller
 
     public function store(Request $request)
     {
+        // Check if student has approved accommodation and admin hasn't allowed new registration
+        $hasApproved = AccommodationForm::where('studentID', Auth::id())->where('status', 'approved')->exists();
+        $hasAllowedNew = AccommodationForm::where('studentID', Auth::id())->where('status', 'approved')->where('admin_allowed_new', true)->exists();
+
+        if ($hasApproved && !$hasAllowedNew) {
+            return redirect()->back()->withErrors(['general' => 'You already have an approved accommodation registration. You cannot submit another one unless it is declined or approved for a new semester by an admin.']);
+        }
+
         $request->validate([
             'fullName' => 'required|string|max:255',
-            'matricNumber' => 'required|string|max:255|unique:accommodation_forms,matricNumber',
+            'matricNumber' => 'required|string|max:255',
             'address' => 'required|string|max:255',
             'landlordName' => 'required|string|max:255',
             'rentalType' => 'required|in:Single Room,Shared Room,Studio',
             'rentalAgreement' => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048',
             'paymentProof' => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048',
-        ], [
-            'matricNumber.unique' => 'You have already registered accommodations with this matric number.',
+            'rentalRequestID' => 'nullable|exists:rental_requests,requestID',
         ]);
 
-        $data = $request->only(['fullName', 'matricNumber', 'address', 'landlordName', 'rentalType']);
+        // If rentalRequestID is provided, validate it belongs to the student and is accepted
+        if ($request->rentalRequestID) {
+            $rentalRequest = RentalRequest::where('requestID', $request->rentalRequestID)
+                ->where('studentID', Auth::id())
+                ->where('requestStatus', 'accepted')
+                ->first();
+            if (!$rentalRequest) {
+                return redirect()->back()->withErrors(['rentalRequestID' => 'Invalid rental request.']);
+            }
+        }
+
+        $data = $request->only(['fullName', 'matricNumber', 'address', 'landlordName', 'rentalType', 'rentalRequestID']);
         $data['studentID'] = Auth::id();
 
         if ($request->hasFile('rentalAgreement')) {
@@ -59,7 +86,13 @@ class AccommodationController extends Controller
     public function edit($id)
     {
         $accommodation = AccommodationForm::where('registrationID', $id)->where('studentID', Auth::id())->firstOrFail();
-        return view('student.accommodation-form', compact('accommodation'));
+        $rentalRequest = null;
+        if ($accommodation->rentalRequestID) {
+            $rentalRequest = RentalRequest::with(['listing.user'])
+                ->where('requestID', $accommodation->rentalRequestID)
+                ->first();
+        }
+        return view('student.accommodation-form', compact('accommodation', 'rentalRequest'));
     }
 
     public function update(Request $request, $id)
@@ -74,11 +107,23 @@ class AccommodationController extends Controller
             'rentalType' => 'required|in:Single Room,Shared Room,Studio',
             'rentalAgreement' => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048',
             'paymentProof' => 'nullable|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:2048',
+            'rentalRequestID' => 'nullable|exists:rental_requests,requestID',
         ], [
             'matricNumber.unique' => 'You have already registered accommodations with this matric number.',
         ]);
 
-        $data = $request->only(['fullName', 'matricNumber', 'address', 'landlordName', 'rentalType']);
+        // If rentalRequestID is provided, validate it belongs to the student and is accepted
+        if ($request->rentalRequestID) {
+            $rentalRequest = RentalRequest::where('requestID', $request->rentalRequestID)
+                ->where('studentID', Auth::id())
+                ->where('requestStatus', 'accepted')
+                ->first();
+            if (!$rentalRequest) {
+                return redirect()->back()->withErrors(['rentalRequestID' => 'Invalid rental request.']);
+            }
+        }
+
+        $data = $request->only(['fullName', 'matricNumber', 'address', 'landlordName', 'rentalType', 'rentalRequestID']);
 
         if ($request->hasFile('rentalAgreement')) {
             if ($accommodation->rentalAgreement) {
@@ -146,5 +191,14 @@ class AccommodationController extends Controller
     {
         $accommodation = AccommodationForm::with('student')->findOrFail($id);
         return view('admin.accommodation-detail', compact('accommodation'));
+    }
+
+    public function allowNew(Request $request, $id)
+    {
+        $accommodation = AccommodationForm::findOrFail($id);
+        $accommodation->admin_allowed_new = true;
+        $accommodation->save();
+
+        return redirect()->back()->with('success', 'Student is now allowed to submit a new accommodation registration for the next semester.');
     }
 }
