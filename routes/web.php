@@ -58,9 +58,11 @@ Route::middleware(['auth'])->group(function () {
         Route::put('/student/accommodation/{id}', [AccommodationController::class, 'update'])->name('student.accommodation.update');
         Route::delete('/student/accommodation/{id}', [AccommodationController::class, 'destroy'])->name('student.accommodation.destroy');
 
-        Route::get('/student/chat', function () {
-            return view('student.chat');
-        })->name('student.chat');
+        Route::get('/student/chat', [App\Http\Controllers\ChatController::class, 'studentIndex'])->name('student.chat');
+        Route::get('/student/chat/initiate-from-listing/{listingId}', [App\Http\Controllers\ChatController::class, 'initiateFromListing'])->name('student.chat.initiate-from-listing');
+        Route::post('/student/chat/initiate', [App\Http\Controllers\ChatController::class, 'initiateRequest'])->name('student.chat.initiate');
+        Route::post('/student/chat/{chatID}/send', [App\Http\Controllers\ChatController::class, 'studentSendMessage'])->name('student.chat.send');
+        Route::delete('/student/chat/{chatID}', [App\Http\Controllers\ChatController::class, 'studentDeleteChat'])->name('student.chat.delete');
 
         Route::get('/student/community', function () {
             return view('student.community');
@@ -96,9 +98,11 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('/landlord/approved-listings', [ListingController::class, 'approvedListings'])->name('landlord.approved-listings');
 
-        Route::get('/landlord/chat', function () {
-            return view('landlord.chat');
-        })->name('landlord.chat');
+        Route::get('/landlord/chat', [App\Http\Controllers\ChatController::class, 'landlordIndex'])->name('landlord.chat');
+        Route::post('/landlord/chat/{chatID}/send', [App\Http\Controllers\ChatController::class, 'landlordSendMessage'])->name('landlord.chat.send');
+        Route::delete('/landlord/chat/{chatID}', [App\Http\Controllers\ChatController::class, 'landlordDeleteChat'])->name('landlord.chat.delete');
+        Route::post('/landlord/chat/{chatID}/accept', [App\Http\Controllers\ChatController::class, 'landlordAcceptChat'])->name('landlord.chat.accept');
+        Route::post('/landlord/chat/{chatID}/decline', [App\Http\Controllers\ChatController::class, 'landlordDeclineChat'])->name('landlord.chat.decline');
 
         Route::get('/landlord/community', function () {
             return view('landlord.community');

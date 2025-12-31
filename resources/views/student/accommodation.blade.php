@@ -15,7 +15,7 @@
                 Submit Manual Accommodation
             </a>
             <span class="text-gray-600">or</span>
-            <a href="{{ route('student.rental-requests') }}" class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-lg transition duration-300 text-lg inline-block">
+            <a href="{{ route('student.rental-requests') }}" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-8 rounded-lg transition duration-300 text-lg inline-block">
                 Submit Verified Accommodation
             </a>
         </div>

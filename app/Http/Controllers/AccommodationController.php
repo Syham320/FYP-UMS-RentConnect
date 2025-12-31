@@ -169,10 +169,11 @@ class AccommodationController extends Controller
 
     public function approve($id)
     {
-        $accommodation = AccommodationForm::findOrFail($id);
+        $accommodation = AccommodationForm::with('student')->findOrFail($id);
         $accommodation->update(['status' => 'approved']);
 
-        // TODO: Notify student of approval
+        // Notify student of approval
+        Notification::send($accommodation->student, new AccommodationApproved($accommodation));
 
         return redirect()->route('admin.accommodation')->with('success', 'Accommodation registration approved.');
     }

@@ -65,15 +65,21 @@
                             </div>
                             <span class="text-sm text-gray-600">{{ $listing->user->userName }}</span>
                         </div>
-                        @if(in_array($listing->listingID, $requestedListings ?? []))
-                            <button class="bg-gray-500 text-white px-4 py-2 rounded-lg cursor-not-allowed" disabled>
-                                Requested
+                        <div class="flex space-x-2">
+                            <!-- Chat Button -->
+                            <button class="bg-green-500 text-white px-3 py-2 rounded-lg hover:bg-green-600 transition-colors duration-200 chat-btn" data-listing-id="{{ $listing->listingID }}" title="Chat with Landlord">
+                                <i class="fas fa-comment"></i>
                             </button>
-                        @else
-                            <button class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors duration-200 submit-request-btn" data-listing-id="{{ $listing->listingID }}">
-                                Submit Request
-                            </button>
-                        @endif
+                            @if(in_array($listing->listingID, $requestedListings ?? []))
+                                <button class="bg-gray-500 text-white px-4 py-2 rounded-lg cursor-not-allowed" disabled>
+                                    Requested
+                                </button>
+                            @else
+                                <button class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors duration-200 submit-request-btn" data-listing-id="{{ $listing->listingID }}">
+                                    Submit Request
+                                </button>
+                            @endif
+                        </div>
                     </div>
                 </div>
             </div>
@@ -205,6 +211,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Re-enable button
                 button.disabled = false;
             });
+        });
+    });
+
+    // Chat button functionality
+    document.querySelectorAll('.chat-btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const listingId = this.dataset.listingId;
+
+            // Redirect to initiate chat from listing
+            window.location.href = `/student/chat/initiate-from-listing/${listingId}`;
         });
     });
 
