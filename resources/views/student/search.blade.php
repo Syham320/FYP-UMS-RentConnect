@@ -3,6 +3,34 @@
 @section('head')
 @parent
 <link rel="stylesheet" href="{{ asset('css/student/dashboard.css') }}">
+<style>
+    .list-view .listing-image {
+        display: none;
+    }
+    .list-view .listing-card {
+        flex-direction: row;
+        align-items: center;
+        padding: 1rem;
+    }
+    .list-view .listing-card .p-4 {
+        padding: 0 0 0 1rem;
+        flex: 1;
+    }
+    .list-view .listing-card .absolute {
+        position: static;
+        margin-left: auto;
+        margin-right: 0;
+    }
+    .list-view .listing-card .w-full.h-48 {
+        width: 0;
+        height: 0;
+    }
+    .list-view .bookmark-btn {
+        position: static !important;
+        margin-left: auto;
+        margin-right: 0;
+    }
+</style>
 @endsection
 
 @section('student-content')
@@ -68,11 +96,22 @@
         <div class="text-lg font-semibold text-gray-700">
             Showing {{ $listings->count() }} {{ $listings->count() == 1 ? 'result' : 'results' }}
         </div>
+        <div class="flex items-center space-x-2">
+            <span class="text-sm text-gray-600">View:</span>
+            <div class="flex rounded-lg overflow-hidden border border-gray-300">
+                <button id="gridViewBtn" class="px-3 py-1 bg-blue-500 text-white rounded-l-lg hover:bg-blue-600 transition-colors duration-200">
+                    <i class="fas fa-th"></i> Grid
+                </button>
+                <button id="listViewBtn" class="px-3 py-1 bg-gray-300 text-gray-700 rounded-r-lg hover:bg-gray-400 transition-colors duration-200">
+                    <i class="fas fa-list"></i> List
+                </button>
+            </div>
+        </div>
     </div>
 
     <!-- Search Results -->
     @if($listings->count() > 0)
-        <div class="dashboard-grid">
+        <div id="searchResults" class="dashboard-grid">
             @foreach($listings as $listing)
                 @php
                     $images = is_string($listing->images) ? json_decode($listing->images, true) : $listing->images;
@@ -126,9 +165,15 @@
                                 </div>
                                 <span class="text-sm text-gray-600">{{ $listing->user->userName }}</span>
                             </div>
-                            <button class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors duration-200 submit-request-btn" data-listing-id="{{ $listing->listingID }}">
-                                Submit Request
-                            </button>
+                            @if(in_array($listing->listingID, $requestedListings ?? []))
+                                <button class="bg-gray-500 text-white px-4 py-2 rounded-lg cursor-not-allowed" disabled>
+                                    Already Requested
+                                </button>
+                            @else
+                                <button class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors duration-200 submit-request-btn" data-listing-id="{{ $listing->listingID }}">
+                                    Submit Request
+                                </button>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -281,6 +326,23 @@ document.addEventListener('DOMContentLoaded', function() {
     // Auto-submit form when sort changes
     document.getElementById('sortSelect').addEventListener('change', function() {
         document.getElementById('searchForm').submit();
+    });
+
+    // View toggle functionality
+    const gridViewBtn = document.getElementById('gridViewBtn');
+    const listViewBtn = document.getElementById('listViewBtn');
+    const searchResults = document.getElementById('searchResults');
+
+    gridViewBtn.addEventListener('click', function() {
+        searchResults.className = 'dashboard-grid';
+        gridViewBtn.className = 'px-3 py-1 bg-blue-500 text-white rounded-l-lg hover:bg-blue-600 transition-colors duration-200';
+        listViewBtn.className = 'px-3 py-1 bg-gray-300 text-gray-700 rounded-r-lg hover:bg-gray-400 transition-colors duration-200';
+    });
+
+    listViewBtn.addEventListener('click', function() {
+        searchResults.className = 'space-y-4 list-view';
+        listViewBtn.className = 'px-3 py-1 bg-blue-500 text-white rounded-r-lg hover:bg-blue-600 transition-colors duration-200';
+        gridViewBtn.className = 'px-3 py-1 bg-gray-300 text-gray-700 rounded-l-lg hover:bg-gray-400 transition-colors duration-200';
     });
 });
 

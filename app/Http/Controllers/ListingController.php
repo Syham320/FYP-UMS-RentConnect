@@ -294,14 +294,7 @@ class ListingController extends Controller
      */
     public function search(Request $request)
     {
-        // Get listing IDs where any rental request has been accepted
-        $acceptedListingIds = RentalRequest::where('requestStatus', 'accepted')
-            ->pluck('listingID')
-            ->unique()
-            ->toArray();
-
         $query = Listing::where('availabilityStatus', 'approved')
-            ->whereNotIn('listingID', $acceptedListingIds)
             ->with('user');
 
         // Keyword search (search in title, description, and location)
@@ -362,6 +355,15 @@ class ListingController extends Controller
             $bookmarkedListings = Auth::user()->bookmarks()->pluck('listingID')->toArray();
         }
 
+        // Get rental requests for the current user
+        $requestedListings = [];
+        if (Auth::check()) {
+            $requestedListings = Auth::user()->rentalRequests()
+                ->whereIn('requestStatus', ['pending', 'accepted'])
+                ->pluck('listingID')
+                ->toArray();
+        }
+
         // Get filter values for maintaining state
         $filters = [
             'query' => $request->input('query'),
@@ -371,6 +373,6 @@ class ListingController extends Controller
             'sort' => $sortBy
         ];
 
-        return view('student.search', compact('listings', 'bookmarkedListings', 'filters'));
+        return view('student.search', compact('listings', 'bookmarkedListings', 'filters', 'requestedListings'));
     }
 }
