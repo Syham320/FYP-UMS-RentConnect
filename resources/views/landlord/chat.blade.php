@@ -174,8 +174,8 @@
                 @else
                     <div class="flex-1 flex items-center justify-center bg-gray-50">
                         <div class="text-center text-gray-500">
-                            <i class="fas fa-comments text-4xl md:text-6xl mb-4"></i>
-                            <h3 class="text-xl font-semibold mb-2">Select a conversation</h3>
+                            <i class="fas fa-comments text-2xl md:text-4xl mb-2"></i>
+                            <h3 class="text-lg font-semibold mb-1">Select a conversation</h3>
                             <p>Choose a chat from the sidebar to start messaging</p>
                         </div>
                     </div>
