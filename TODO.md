@@ -1,8 +1,2 @@
-# Task: Relocate Create New Listing Button - RESTORED
-
-## Completed Steps
-- [x] Restore "Create New Listing" button to Approved Listings page (resources/views/landlord/approved-listings.blade.php)
-- [x] Remove button from My Listings page (resources/views/landlord/my-listings.blade.php)
-
-## Summary
-The "Create New Listing" button has been restored to the Approved Listings page as requested. The relocation attempt was reverted due to layout issues.
+- [x] Fix search page to exclude rental listings that have been accepted by the landlord.
+- [ ] Update the keyword search in ListingController.php to include 'roomType' and 'contactInfo' fields for more flexible searching.

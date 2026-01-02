@@ -294,16 +294,25 @@ class ListingController extends Controller
      */
     public function search(Request $request)
     {
+        // Get listing IDs where any rental request has been accepted
+        $acceptedListingIds = RentalRequest::where('requestStatus', 'accepted')
+            ->pluck('listingID')
+            ->unique()
+            ->toArray();
+
         $query = Listing::where('availabilityStatus', 'approved')
+            ->whereNotIn('listingID', $acceptedListingIds)
             ->with('user');
 
-        // Keyword search (search in title, description, and location)
+        // Keyword search (search in title, description, location, room type, and contact info)
         if ($request->filled('query')) {
             $searchTerm = $request->input('query');
             $query->where(function($q) use ($searchTerm) {
                 $q->where('listingTitle', 'like', '%' . $searchTerm . '%')
                   ->orWhere('listingDescription', 'like', '%' . $searchTerm . '%')
-                  ->orWhere('location', 'like', '%' . $searchTerm . '%');
+                  ->orWhere('location', 'like', '%' . $searchTerm . '%')
+                  ->orWhere('roomType', 'like', '%' . $searchTerm . '%')
+                  ->orWhere('contactInfo', 'like', '%' . $searchTerm . '%');
             });
         }
 
