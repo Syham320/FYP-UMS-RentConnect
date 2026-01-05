@@ -13,7 +13,7 @@
         @endif
 
         <div class="text-center">
-            <a href="{{ route('student.submit-complaint') }}" class="bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-8 rounded-lg transition duration-300 text-lg inline-block">
+            <a href="{{ route('student.submit-complaint') }}" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-8 rounded-lg transition duration-300 text-lg inline-block">
                 Submit Complaint
             </a>
         </div>
