@@ -53,8 +53,14 @@
                 <a href="{{ route('admin.feedback') }}" class="block px-4 py-2 text-gray-700 hover:bg-red-100 rounded-lg {{ request()->routeIs('admin.feedback') ? 'bg-red-200' : '' }}">
                     <i class="fas fa-comments mr-2"></i>Manage Feedback
                 </a>
+                <a href="{{ route('admin.complaint') }}" class="block px-4 py-2 text-gray-700 hover:bg-red-100 rounded-lg {{ request()->routeIs('admin.complaint') ? 'bg-red-200' : '' }}">
+                    <i class="fas fa-exclamation-triangle mr-2"></i>Manage Complaints
+                </a>
                 <a href="{{ route('admin.faqs.index') }}" class="block px-4 py-2 text-gray-700 hover:bg-red-100 rounded-lg {{ request()->routeIs('admin.faqs.index') ? 'bg-red-200' : '' }}">
                     <i class="fas fa-question-circle mr-2"></i>Manage FAQs
+                </a>
+                <a href="{{ route('admin.community') }}" class="block px-4 py-2 text-gray-700 hover:bg-red-100 rounded-lg {{ request()->routeIs('admin.community') ? 'bg-red-200' : '' }}">
+                    <i class="fas fa-comments mr-2"></i>Forum Community
                 </a>
             </nav>
 

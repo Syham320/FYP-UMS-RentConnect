@@ -83,6 +83,14 @@ Route::middleware(['auth'])->group(function () {
             $faqs = \App\Models\Faq::where('user_role', 'Student')->where('is_active', true)->get()->groupBy('category');
             return view('student.faqs', compact('faqs'));
         })->name('student.faqs');
+
+        Route::get('/student/complaint', [App\Http\Controllers\ComplaintController::class, 'userComplaints'])->name('student.complaint');
+        Route::get('/student/complaint/{id}', [App\Http\Controllers\ComplaintController::class, 'show'])->name('student.complaint.detail');
+        Route::get('/student/submit-complaint', function () {
+            return view('student.submit-complaint');
+        })->name('student.submit-complaint');
+        Route::post('/student/complaint', [App\Http\Controllers\ComplaintController::class, 'store'])->name('student.complaint.store');
+
     });
 
     Route::middleware('role:Landlord')->group(function () {
@@ -164,5 +172,13 @@ Route::middleware(['auth'])->group(function () {
         Route::put('/admin/faqs/{faq}', [FaqController::class, 'update'])->name('admin.faqs.update');
         Route::delete('/admin/faqs/{faq}', [FaqController::class, 'destroy'])->name('admin.faqs.destroy');
         Route::post('/admin/faqs/{faq}/toggle', [FaqController::class, 'toggle'])->name('admin.faqs.toggle');
+
+        Route::get('/admin/community', function () {
+            return view('admin.community');
+        })->name('admin.community');
+
+        Route::get('/admin/complaint', [App\Http\Controllers\ComplaintController::class, 'index'])->name('admin.complaint');
+        Route::get('/admin/complaint/{id}', [App\Http\Controllers\ComplaintController::class, 'show'])->name('admin.complaint.detail');
+        Route::patch('/admin/complaint/{id}/status', [App\Http\Controllers\ComplaintController::class, 'updateStatus'])->name('admin.complaint.update-status');
     });
-});
+}); 

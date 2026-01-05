@@ -10,7 +10,7 @@
             <div class="mb-6 text-green-700 bg-green-100 p-4 rounded">{{ session('success') }}</div>
         @endif
 
-        <form method="POST" action="{{ route('landlord.feedback.store') }}" class="space-y-6">
+        <form method="POST" action="{{ route('landlord.feedback.store') }}" class="space-y-6" onsubmit="return confirm('Are you sure you want to submit this feedback?');">
             @csrf
             <div>
                 <label for="feedbackType" class="block text-sm font-medium text-gray-700 mb-2">Feedback Type</label>
