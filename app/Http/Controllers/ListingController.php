@@ -146,12 +146,35 @@ class ListingController extends Controller
 
 
 
-    public function manageListings()
+    public function manageListings(Request $request)
     {
-        $listings = Listing::whereIn('availabilityStatus', ['pending', 'approved', 'rejected'])
-            ->with('user')
-            ->orderBy('createdDate', 'desc')
-            ->get();
+        $query = Listing::whereIn('availabilityStatus', ['pending', 'approved', 'rejected'])
+            ->with('user');
+
+        // Filter by status
+        if ($request->has('status') && !empty($request->status)) {
+            $query->where('availabilityStatus', $request->status);
+        }
+
+        // Search by title or landlord name
+        if ($request->has('search') && !empty($request->search)) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('listingTitle', 'like', "%{$search}%")
+                  ->orWhereHas('user', function ($userQuery) use ($search) {
+                      $userQuery->where('userName', 'like', "%{$search}%");
+                  });
+            });
+        }
+
+        // Order by latest if requested
+        if ($request->has('latest') && $request->latest == '1') {
+            $query->orderBy('createdDate', 'desc');
+        } else {
+            $query->orderBy('createdDate', 'asc'); // Default order
+        }
+
+        $listings = $query->get();
 
         return view('admin.manage-listings', compact('listings'));
     }

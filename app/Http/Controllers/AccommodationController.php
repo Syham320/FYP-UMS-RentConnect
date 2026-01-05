@@ -165,7 +165,26 @@ class AccommodationController extends Controller
 
     public function adminIndex()
     {
-        $accommodations = AccommodationForm::with('student')->orderBy('submittedDate', 'desc')->get();
+        $query = AccommodationForm::with('student');
+
+        // Apply search filter
+        if ($search = request('search')) {
+            $query->where(function($q) use ($search) {
+                $q->where('matricNumber', 'like', '%' . $search . '%')
+                  ->orWhere('fullName', 'like', '%' . $search . '%');
+            });
+        }
+
+        // Apply status filter
+        if ($status = request('status')) {
+            $query->where('status', $status);
+        }
+
+        // Apply ordering
+        $order = request('latest') ? 'desc' : 'asc';
+        $query->orderBy('submittedDate', $order);
+
+        $accommodations = $query->get();
         return view('admin.accommodation', compact('accommodations'));
     }
 

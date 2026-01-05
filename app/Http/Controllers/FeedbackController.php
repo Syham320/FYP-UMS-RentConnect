@@ -8,9 +8,46 @@ use Illuminate\Support\Facades\Auth;
 
 class FeedbackController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $feedbacks = Feedback::with('user')->orderBy('timeStamp', 'desc')->get();
+        $query = Feedback::with('user');
+
+        // Filter by feedbackType
+        if ($request->has('feedbackType') && !empty($request->feedbackType)) {
+            $query->where('feedbackType', $request->feedbackType);
+        }
+
+        // Filter by status
+        if ($request->has('status') && !empty($request->status)) {
+            $query->where('status', $request->status);
+        }
+
+        // Filter by priority
+        if ($request->has('priority') && !empty($request->priority)) {
+            $query->where('priority', $request->priority);
+        }
+
+        // Search by subject, feedbackText or user name
+        if ($request->has('search') && !empty($request->search)) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('subject', 'like', "%{$search}%")
+                  ->orWhere('feedbackText', 'like', "%{$search}%")
+                  ->orWhereHas('user', function ($userQuery) use ($search) {
+                      $userQuery->where('userName', 'like', "%{$search}%");
+                  });
+            });
+        }
+
+        // Order by latest if requested
+        if ($request->has('latest') && $request->latest == '1') {
+            $query->orderBy('timeStamp', 'desc');
+        } else {
+            $query->orderBy('timeStamp', 'asc'); // Default order
+        }
+
+        $feedbacks = $query->get();
+
         return view('admin.feedback', compact('feedbacks'));
     }
 

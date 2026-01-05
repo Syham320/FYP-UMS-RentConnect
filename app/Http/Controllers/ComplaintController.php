@@ -8,9 +8,40 @@ use Illuminate\Support\Facades\Auth;
 
 class ComplaintController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $complaints = Complaint::with('user')->orderBy('submittedDate', 'desc')->get();
+        $query = Complaint::with('user');
+
+        // Filter by category
+        if ($request->has('category') && !empty($request->category)) {
+            $query->where('complaintCategory', $request->category);
+        }
+
+        // Filter by status
+        if ($request->has('status') && !empty($request->status)) {
+            $query->where('complaintStatus', $request->status);
+        }
+
+        // Search by description or user name
+        if ($request->has('search') && !empty($request->search)) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('complaintDescription', 'like', "%{$search}%")
+                  ->orWhereHas('user', function ($userQuery) use ($search) {
+                      $userQuery->where('userName', 'like', "%{$search}%");
+                  });
+            });
+        }
+
+        // Order by latest if requested
+        if ($request->has('latest') && $request->latest == '1') {
+            $query->orderBy('submittedDate', 'desc');
+        } else {
+            $query->orderBy('submittedDate', 'asc'); // Default order
+        }
+
+        $complaints = $query->get();
+
         return view('admin.complaint', compact('complaints'));
     }
 

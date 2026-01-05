@@ -8,9 +8,47 @@ use Illuminate\Support\Facades\Auth;
 
 class FaqController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $faqs = Faq::with('admin')->orderBy('updatedDate', 'desc')->get();
+        $query = Faq::with('admin');
+
+        // Filter by user_role
+        if ($request->has('user_role') && !empty($request->user_role)) {
+            $query->where('user_role', $request->user_role);
+        }
+
+        // Filter by category
+        if ($request->has('category') && !empty($request->category)) {
+            $query->where('category', $request->category);
+        }
+
+        // Filter by status
+        if ($request->has('status') && !empty($request->status)) {
+            if ($request->status === 'active') {
+                $query->where('is_active', true);
+            } elseif ($request->status === 'inactive') {
+                $query->where('is_active', false);
+            }
+        }
+
+        // Search by question or answer
+        if ($request->has('search') && !empty($request->search)) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('faqQuestion', 'like', "%{$search}%")
+                  ->orWhere('faqAnswer', 'like', "%{$search}%");
+            });
+        }
+
+        // Order by latest if requested
+        if ($request->has('latest') && $request->latest == '1') {
+            $query->orderBy('updatedDate', 'desc');
+        } else {
+            $query->orderBy('updatedDate', 'asc'); // Default order
+        }
+
+        $faqs = $query->get();
+
         return view('admin.faqs', compact('faqs'));
     }
 

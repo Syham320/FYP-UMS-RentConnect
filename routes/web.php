@@ -10,6 +10,7 @@ use App\Http\Controllers\RentalRequestController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\AccommodationController;
 use App\Http\Controllers\FaqController;
+use App\Http\Controllers\UserController;
 
 // Landing page
 Route::get('/', function () {
@@ -150,10 +151,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/admin/approve-listing/{id}', [ListingController::class, 'approveListing'])->name('admin.approve-listing');
         Route::post('/admin/reject-listing/{id}', [ListingController::class, 'rejectListing'])->name('admin.reject-listing');
 
-        Route::get('/admin/users', function () {
-            $users = \App\Models\User::all();
-            return view('admin.users', compact('users'));
-        })->name('admin.users');
+        Route::get('/admin/users', [UserController::class, 'index'])->name('admin.users');
 
         Route::get('/admin/accommodation', [AccommodationController::class, 'adminIndex'])->name('admin.accommodation');
         Route::get('/admin/accommodation/{id}', [AccommodationController::class, 'adminShow'])->name('admin.accommodation.show');
